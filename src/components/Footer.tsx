@@ -19,7 +19,7 @@ const Footer: React.FC<FooterProps> = ({ isDark }) => (
             සීට්ටුව
           </div>
           <div
-            className={`text-[0.6rem] uppercase tracking-[4px] opacity-70 ${isDark ? 'text-[#f2f0ea]' : 'text-[#1a1a1a]'}`}
+            className={`text-[0.43rem] uppercase tracking-[4px] opacity-70 ${isDark ? 'text-[#f2f0ea]' : 'text-[#1a1a1a]'}`}
           >
             Seettuwa
           </div>
