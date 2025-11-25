@@ -21,6 +21,10 @@ const Home: React.FC = () => {
     document.body.setAttribute('data-theme', theme);
   }, [theme]);
 
+  useEffect(() => {
+    document.title = 'Seettuwa | Authentic Savings Circles';
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen font-['Inter'] relative">
       <div className="noise-overlay" />
