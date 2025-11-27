@@ -1,20 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../store/store.ts';
+
 import { useSeettuAnimation } from '../hooks/useSeettuAnimation.ts';
 import { PARTICIPANTS } from '../data/constant.ts';
+
 import Navbar from '../components/NavBar.tsx';
 import MegaMenu from '../components/MegaMenu.tsx';
 import Footer from '../components/Footer.tsx';
 
 const Home: React.FC = () => {
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const theme = useSelector((state: RootState) => state.theme.value);
+  //const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+
+  //const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   const { bowlRef, visualRef, handRef, chitRefs } =
     useSeettuAnimation(PARTICIPANTS);
 
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
-  };
+  // const toggleTheme = () => {
+  //   setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  // };
 
   useEffect(() => {
     document.body.setAttribute('data-theme', theme);
@@ -29,14 +35,14 @@ const Home: React.FC = () => {
       <div className="noise-overlay" />
 
       <Navbar
-        toggleTheme={toggleTheme}
-        isDark={theme === 'dark'}
-        toggleMenu={() => setMenuOpen(true)}
+      // toggleTheme={toggleTheme}
+      //isDark={theme === 'dark'}
+      //toggleMenu={() => setMenuOpen(true)}
       />
       <MegaMenu
-        isOpen={menuOpen}
-        onClose={() => setMenuOpen(false)}
-        isDark={theme === 'dark'}
+      //isOpen={menuOpen}
+      //onClose={() => setMenuOpen(false)}
+      //isDark={theme === 'dark'}
       />
 
       {/* 2. Add the Cookie Consent here so it sits on top of content but below Nav */}
@@ -156,7 +162,8 @@ const Home: React.FC = () => {
       </main>
 
       <div className="mt-auto">
-        <Footer isDark={theme === 'dark'} />
+        <Footer />
+        {/*isDark={theme === 'dark'}*/}
       </div>
     </div>
   );
