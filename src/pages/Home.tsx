@@ -9,7 +9,6 @@ const Home: React.FC = () => {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
-  // Use the custom hook which returns typed refs
   const { bowlRef, visualRef, handRef, chitRefs } =
     useSeettuAnimation(PARTICIPANTS);
 
@@ -40,37 +39,47 @@ const Home: React.FC = () => {
         isDark={theme === 'dark'}
       />
 
-      <main className="flex-1 min-h-[calc(100dvh-0px)] grid grid-cols-1 lg:grid-cols-2 pt-[72px] relative">
+      {/* 2. Add the Cookie Consent here so it sits on top of content but below Nav */}
+      {/*<CookieConsent isDark={theme === 'dark'} />*/}
+
+      <main className="flex-1 min-h-[calc(100dvh-0px)] grid grid-cols-1 lg:grid-cols-[55%_45%] pt-[72px] relative">
         {/* LEFT: CONTENT */}
-        <section className="flex flex-col justify-center px-8 lg:pl-[10%] lg:pr-[2%] py-12 lg:py-0 relative z-30 order-2 lg:order-1 text-center lg:text-left">
+        <section className="flex flex-col justify-center px-8 lg:pl-[8%] lg:pr-[5%] py-12 lg:py-0 relative z-30 order-2 lg:order-1 text-center lg:text-left">
           <div
-            className={`text-xs uppercase tracking-[3px] font-semibold mb-4 ${theme === 'dark' ? 'text-[#d4a574]' : 'text-[#b8894d]'}`}
+            className={`text-xs uppercase tracking-[4px] font-semibold mb-8 ${theme === 'dark' ? 'text-[#d4a574]' : 'text-[#b8894d]'}`}
           >
             Authentic Savings Circles
           </div>
 
-          <h1 className="font-['Playfair_Display'] text-5xl lg:text-[3.5rem] leading-[1.15] mb-6 bg-clip-text text-transparent bg-gradient-to-l from-[#d4a574]/40 via-[#d4a574]/70 to-[#d4a574]">
-            Digital Trust,
-            <br />
-            Timeless Tradition.
-          </h1>
+          <div className="relative mb-10">
+            <div
+              className={`hidden lg:block absolute -left-6 top-0 bottom-0 w-1 rounded-full ${theme === 'dark' ? 'bg-gradient-to-b from-transparent via-[#d4a574] to-transparent' : 'bg-gradient-to-b from-transparent via-[#b8894d] to-transparent'} opacity-50`}
+            ></div>
+
+            <h1 className="font-['Playfair_Display'] text-5xl lg:text-[3.5rem] leading-[1.15] bg-clip-text text-transparent bg-gradient-to-l from-[#d4a574]/40 via-[#d4a574]/70 to-[#d4a574]">
+              Digital Trust,
+              <br />
+              Timeless Tradition.
+            </h1>
+          </div>
 
           <p
-            className={`text-lg leading-relaxed max-w-xl mb-8 mx-auto lg:mx-0 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}
+            className={`text-[1.05rem] lg:text-[1.15rem] leading-relaxed tracking-wide mb-10 mx-auto lg:mx-0 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}
+            style={{ wordSpacing: '0.15em' }}
           >
             Experience the transparency of traditional Seettu/Chit Funds with
             the security of modern blockchain. Create groups, bid in real-time,
             and manage your community savings with absolute trust.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+          <div className="flex flex-col sm:flex-row gap-3.5 justify-center lg:justify-start">
             <button
-              className={`px-8 py-3.5 rounded-md font-semibold text-white shadow-lg shadow-[#d4a574]/30 hover:translate-y-[-2px] hover:shadow-[#d4a574]/40 transition-all bg-gradient-to-br from-[#d4a574] to-[#a3784e]`}
+              className={`px-7 py-3 rounded-md text-[15px] font-semibold text-white shadow-lg shadow-[#d4a574]/30 hover:translate-y-[-2px] hover:shadow-[#d4a574]/40 transition-all bg-gradient-to-br from-[#d4a574] to-[#a3784e]`}
             >
               Explore Groups
             </button>
             <button
-              className={`px-8 py-3.5 rounded-md font-medium border-2 transition-all hover:bg-[#d4a574]/10 ${theme === 'dark' ? 'border-white/10 text-[#f2f0ea] hover:border-[#d4a574]' : 'border-black/10 text-[#1a1a1a] hover:border-[#b8894d]'}`}
+              className={`px-7 py-3 rounded-md text-[15px] font-medium border-2 transition-all hover:bg-[#d4a574]/10 ${theme === 'dark' ? 'border-white/10 text-[#f2f0ea] hover:border-[#d4a574]' : 'border-black/10 text-[#1a1a1a] hover:border-[#b8894d]'}`}
             >
               How it Works
             </button>
