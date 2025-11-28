@@ -14,14 +14,14 @@ const Loader: React.FC = () => {
       {/* Main Loader */}
       <div className="flex flex-col items-center gap-6">
         {/* Logo */}
-        <div className="flex flex-col items-center gap-0.5 opacity-90">
+        <div className="flex flex-col gap-0.5 group">
           <div
-            className={`font-['Gemunu_Libre'] text-[2.5rem] font-bold leading-none tracking-wide ${isDark ? 'text-[#d4a574]' : 'text-[#b8894d]'}`}
+            className={`font-['Gemunu_Libre'] text-[2.6rem] font-bold leading-none tracking-wide ${isDark ? 'text-[#d4a574]' : 'text-[#b8894d]'}`}
           >
             සීට්ටුව
           </div>
           <div
-            className={`font-['Inter'] uppercase tracking-[5px] text-[0.5rem] opacity-70 leading-none ${isDark ? 'text-[#f2f0ea]' : 'text-[#1a1a1a]'}`}
+            className={`font-['Inter'] uppercase tracking-[6px] text-[0.56rem] opacity-70 leading-none transition-colors ${isDark ? 'text-[#f2f0ea]' : 'text-[#1a1a1a]'}`}
           >
             Seettuwa
           </div>
