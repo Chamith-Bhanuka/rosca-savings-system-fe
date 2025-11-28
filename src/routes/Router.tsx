@@ -4,10 +4,16 @@ import { lazy, Suspense } from 'react';
 // Lazy load pages
 const Home = lazy(() => import('../pages/Home'));
 const Login = lazy(() => import('../pages/Login.tsx'));
+const Register = lazy(() => import('../pages/Register.tsx'));
 
 const LoginWrapper = () => {
   const navigate = useNavigate();
   return <Login onNavigate={(page) => navigate(`/${page}`)} />;
+};
+
+const RegisterWrapper = () => {
+  const navigate = useNavigate();
+  return <Register onNavigate={(page) => navigate(`/${page}`)} />;
 };
 
 export default function Router() {
@@ -24,6 +30,8 @@ export default function Router() {
           <Route path="/home" element={<Home />} />
 
           <Route path="/login" element={<LoginWrapper />} />
+
+          <Route path="/register" element={<RegisterWrapper />} />
 
           <Route path="/" element={<div>Hello, from router..!</div>} />
         </Routes>
