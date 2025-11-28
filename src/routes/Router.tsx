@@ -1,8 +1,14 @@
-import { BrowserRouter, Routes } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import { Route } from 'react-router-dom';
 
+// Lazy load pages
 const Home = lazy(() => import('../pages/Home'));
+const Login = lazy(() => import('../pages/Login.tsx'));
+
+const LoginWrapper = () => {
+  const navigate = useNavigate();
+  return <Login onNavigate={(page) => navigate(`/${page}`)} />;
+};
 
 export default function Router() {
   return (
@@ -16,6 +22,9 @@ export default function Router() {
       >
         <Routes>
           <Route path="/home" element={<Home />} />
+
+          <Route path="/login" element={<LoginWrapper />} />
+
           <Route path="/" element={<div>Hello, from router..!</div>} />
         </Routes>
       </Suspense>
