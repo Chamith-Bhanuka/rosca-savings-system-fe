@@ -8,6 +8,7 @@ import { PARTICIPANTS } from '../data/constant.ts';
 import Navbar from '../components/NavBar.tsx';
 import MegaMenu from '../components/MegaMenu.tsx';
 import Footer from '../components/Footer.tsx';
+import CookieConsent from '../components/CookieConsent.tsx';
 
 const Home: React.FC = () => {
   const theme = useSelector((state: RootState) => state.theme.value);
@@ -45,8 +46,7 @@ const Home: React.FC = () => {
       //isDark={theme === 'dark'}
       />
 
-      {/* 2. Add the Cookie Consent here so it sits on top of content but below Nav */}
-      {/*<CookieConsent isDark={theme === 'dark'} />*/}
+      <CookieConsent />
 
       <main className="flex-1 min-h-[calc(100dvh-0px)] grid grid-cols-1 lg:grid-cols-[55%_45%] pt-[72px] relative">
         {/* LEFT: CONTENT */}
