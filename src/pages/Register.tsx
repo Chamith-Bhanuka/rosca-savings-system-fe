@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Eye, EyeOff, Moon, Sun } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../store/store.ts';
@@ -16,6 +16,10 @@ const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
   );
 
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    document.title = 'Register | Seettuwa';
+  }, []);
 
   const handleSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
