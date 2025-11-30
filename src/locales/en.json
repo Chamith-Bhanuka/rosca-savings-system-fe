@@ -1,5 +1,24 @@
 {
-  "groups": "Groups",
-  "my_groups": "My Groups",
-  "create_group": "Create Group"
+  "menu": {
+    "groups": "Groups",
+    "myGroups": "My Groups",
+    "createGroup": "Create Group",
+    "joinGroup": "Join Group",
+    "trustProfile": "Trust Profile",
+
+    "actions": "Actions",
+    "contributions": "Contributions",
+    "liveDraw": "Live Draw / Bidding",
+    "wallet": "Wallet / Payments",
+    "disputes": "Disputes / Resolution",
+
+    "insights": "Insights",
+    "analytics": "Analytics",
+    "leaderboard": "Leaderboard",
+    "notifications": "Notifications",
+
+    "settings": "Settings",
+    "adminPanel": "Admin Panel",
+    "help": "Help / Support"
+  }
 }

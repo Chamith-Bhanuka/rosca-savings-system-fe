@@ -1,5 +1,24 @@
 {
-  "groups": "කණ්ඩායම්",
-  "my_groups": "මගේ කණ්ඩායම්",
-  "create_group": "කණ්ඩායමක් සාදන්න"
+  "menu": {
+    "groups": "සමූහ",
+    "myGroups": "මගේ සමූහ",
+    "createGroup": "සමූහයක් සාදන්න",
+    "joinGroup": "සමූහයකට එක්වන්න",
+    "trustProfile": "විශ්වාස ගිණුම",
+
+    "actions": "ක්‍රියා",
+    "contributions": "මුදල් ඉදිරිපත් කිරීම",
+    "liveDraw": "සජීවී ලැයිස්තුව / බිඩ්ඩිං",
+    "wallet": "මුදල් පසුම්බිය / ගෙවීම්",
+    "disputes": "ඉල්ලීම් / ගැටුම් විසඳීම",
+
+    "insights": "අදහස්",
+    "analytics": "පරිගණක විශ්ලේෂණ",
+    "leaderboard": "ධූර ලැයිස්තුව",
+    "notifications": "දැනුම්දීම්",
+
+    "settings": "සැකසුම්",
+    "adminPanel": "පරිපාලන පුවරුව",
+    "help": "උදව් / සහය"
+  }
 }

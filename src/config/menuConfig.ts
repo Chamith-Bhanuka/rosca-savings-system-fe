@@ -1,36 +1,46 @@
-export const menuConfig = [
+export const menuConfig: MenuColumn[] = [
   {
-    title: 'Groups',
+    title: 'menu.groups',
     items: [
-      { label: 'My Groups', route: '/my-groups' },
-      { label: 'Create Group', route: '/create-group' },
-      { label: 'Join Group', route: '/join-group' },
-      { label: 'Trust Profile', route: '/trust-profile' },
+      { label: 'menu.myGroups', route: '/groups' },
+      { label: 'menu.createGroup', route: '/groups/create' },
+      { label: 'menu.joinGroup', route: '/groups/join' },
+      { label: 'menu.trustProfile', route: '/trust' },
     ],
   },
   {
-    title: 'Actions',
+    title: 'menu.actions',
     items: [
-      { label: 'Contributions', route: '/contributions' },
-      { label: 'Live Draw / Bidding', route: '/live-draw' },
-      { label: 'Wallet / Payments', route: '/wallet' },
-      { label: 'Disputes / Resolution', route: '/disputes' },
+      { label: 'menu.contributions', route: '/contributions' },
+      { label: 'menu.liveDraw', route: '/live-draw' },
+      { label: 'menu.wallet', route: '/wallet' },
+      { label: 'menu.disputes', route: '/disputes' },
     ],
   },
   {
-    title: 'Insights',
+    title: 'menu.insights',
     items: [
-      { label: 'Analytics', route: '/analytics' },
-      { label: 'Leaderboard', route: '/leaderboard' },
-      { label: 'Notifications', route: '/notifications' },
+      { label: 'menu.analytics', route: '/analytics' },
+      { label: 'menu.leaderboard', route: '/leaderboard' },
+      { label: 'menu.notifications', route: '/notifications' },
     ],
   },
   {
-    title: 'Settings',
+    title: 'menu.settings',
     items: [
-      { label: 'Admin Panel', route: '/admin' },
-      { label: 'Help / Support', route: '/help' },
-      { label: 'Language: EN', route: 'LANGUAGE_TOGGLE' },
+      { label: 'menu.adminPanel', route: '/admin' },
+      { label: 'menu.help', route: '/help' },
+      { label: 'menu.languageToggle', route: 'LANGUAGE_TOGGLE' },
     ],
   },
 ];
+
+export interface MenuItem {
+  label: string;
+  route: string;
+}
+
+export interface MenuColumn {
+  title: string;
+  items: MenuItem[];
+}
