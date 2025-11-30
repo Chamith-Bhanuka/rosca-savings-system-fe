@@ -38,5 +38,11 @@
       "cookiePolicy": "Cookie Policy",
       "compliance": "Compliance"
     }
+  },
+
+  "navbar": {
+    "dashboard": "Dashboard",
+    "login": "Log In",
+    "menu": "Menu"
   }
 }

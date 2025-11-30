@@ -4,12 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../store/store.ts';
 import { toggleTheme } from '../slices/themeSlice.ts';
 import { toggleMenu } from '../slices/menuSlice.ts';
+import { useTranslation } from 'react-i18next';
 
 const Navbar: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const theme = useSelector((state: RootState) => state.theme.value);
 
   const isDark = theme === 'dark';
+
+  const { t } = useTranslation();
 
   return (
     <nav
@@ -34,7 +37,7 @@ const Navbar: React.FC = () => {
             href="#"
             className={`flex items-center text-sm font-medium relative group px-2 py-2 ${isDark ? 'text-gray-400 hover:text-[#d4a574]' : 'text-gray-500 hover:text-[#b8894d]'}`}
           >
-            Dashboard
+            {t('navbar.dashboard')}
             <span
               className={`absolute -bottom-[2px] left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full ${isDark ? 'bg-[#d4a574]' : 'bg-[#b8894d]'}`}
             ></span>
@@ -43,7 +46,7 @@ const Navbar: React.FC = () => {
             href="#"
             className={`px-6 py-2.5 rounded-full border text-[0.85rem] transition-all ${isDark ? 'border-white/10 bg-white/5 text-[#f2f0ea] hover:bg-[#d4a574]/15 hover:border-[#d4a574]' : 'border-black/10 bg-black/5 text-[#1a1a1a] hover:bg-[#b8894d]/15 hover:border-[#b8894d]'}`}
           >
-            Log In
+            {t('navbar.login')}
           </a>
         </div>
 
@@ -58,7 +61,7 @@ const Navbar: React.FC = () => {
           onClick={() => dispatch(toggleMenu())}
           className={`flex items-center gap-2 text-sm border-none bg-transparent cursor-pointer ${isDark ? 'text-[#f2f0ea]' : 'text-[#1a1a1a]'}`}
         >
-          <span className="hidden sm:inline">Menu</span>
+          <span className="hidden sm:inline">{t('navbar.menu')}</span>
           <Menu size={24} />
         </button>
       </div>
