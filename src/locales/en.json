@@ -44,5 +44,10 @@
     "dashboard": "Dashboard",
     "login": "Log In",
     "menu": "Menu"
+  },
+
+  "home": {
+    "exploreGroups": "Explore Groups",
+    "howItWorks": "How it Works"
   }
 }

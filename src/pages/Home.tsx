@@ -10,6 +10,8 @@ import MegaMenu from '../components/MegaMenu.tsx';
 import Footer from '../components/Footer.tsx';
 import CookieConsent from '../components/CookieConsent.tsx';
 
+import { useTranslation } from 'react-i18next';
+
 const Home: React.FC = () => {
   const theme = useSelector((state: RootState) => state.theme.value);
   //const [theme, setTheme] = useState<'dark' | 'light'>('dark');
@@ -22,6 +24,8 @@ const Home: React.FC = () => {
   // const toggleTheme = () => {
   //   setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   // };
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     document.body.setAttribute('data-theme', theme);
@@ -82,12 +86,12 @@ const Home: React.FC = () => {
             <button
               className={`px-7 py-3 rounded-md text-[15px] font-semibold text-white shadow-lg shadow-[#d4a574]/30 hover:translate-y-[-2px] hover:shadow-[#d4a574]/40 transition-all bg-gradient-to-br from-[#d4a574] to-[#a3784e]`}
             >
-              Explore Groups
+              {t('home.exploreGroups')}
             </button>
             <button
               className={`px-7 py-3 rounded-md text-[15px] font-medium border-2 transition-all hover:bg-[#d4a574]/10 ${theme === 'dark' ? 'border-white/10 text-[#f2f0ea] hover:border-[#d4a574]' : 'border-black/10 text-[#1a1a1a] hover:border-[#b8894d]'}`}
             >
-              How it Works
+              {t('home.howItWorks')}
             </button>
           </div>
         </section>
