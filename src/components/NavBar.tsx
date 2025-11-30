@@ -19,7 +19,7 @@ const Navbar: React.FC = () => {
     <nav
       className={`fixed top-0 left-0 right-0 h-[72px] flex justify-between items-center px-[5%] z-50 backdrop-blur-xl border-b transition-all duration-500 ${isDark ? 'border-white/10 bg-[#0f0806]/80' : 'border-black/10 bg-[#faf8f5]/80'}`}
     >
-      <a href="#" className="flex flex-col gap-0.5 group">
+      <Link to="/home" className="flex flex-col gap-0.5 group">
         <div
           className={`font-['Gemunu_Libre'] text-[2.6rem] font-bold leading-none tracking-wide ${isDark ? 'text-[#d4a574]' : 'text-[#b8894d]'}`}
         >
@@ -30,7 +30,7 @@ const Navbar: React.FC = () => {
         >
           Seettuwa
         </div>
-      </a>
+      </Link>
 
       <div className="flex items-center gap-6">
         <div className="hidden md:flex gap-6">
