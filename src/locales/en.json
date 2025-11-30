@@ -20,5 +20,23 @@
     "settings": "Settings",
     "adminPanel": "Admin Panel",
     "help": "Help / Support"
+  },
+
+  "footer": {
+    "brand": "Seettuwa",
+    "platform": "Platform",
+    "legal": "Legal",
+    "newsletter": "Stay Updated",
+    "newsletterDescription": "Join our newsletter for the latest updates on features and releases.",
+    "items": {
+      "aboutUs": "About Us",
+      "howItWorks": "How it Works",
+      "security": "Security",
+      "fees": "Fees",
+      "termsOfUse": "Terms of Use",
+      "privacyPolicy": "Privacy Policy",
+      "cookiePolicy": "Cookie Policy",
+      "compliance": "Compliance"
+    }
   }
 }

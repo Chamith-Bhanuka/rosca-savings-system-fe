@@ -2,19 +2,19 @@ export const footerConfig: FooterMenuColumn[] = [
   {
     title: 'footer.platform',
     items: [
-      { label: 'footer.aboutUs', route: '/about' },
-      { label: 'footer.howItWorks', route: '/how' },
-      { label: 'footer.security', route: '/security' },
-      { label: 'footer.fees', route: '/fees' },
+      { label: 'footer.items.aboutUs', route: '/about' },
+      { label: 'footer.items.howItWorks', route: '/how' },
+      { label: 'footer.items.security', route: '/security' },
+      { label: 'footer.items.fees', route: '/fees' },
     ],
   },
   {
     title: 'footer.legal',
     items: [
-      { label: 'footer.termsOfUse', route: '/terms' },
-      { label: 'footer.privacyPolicy', route: '/privacy' },
-      { label: 'footer.cookePolicy', route: '/cookies' },
-      { label: 'footer.compliance', route: '/compliance' },
+      { label: 'footer.items.termsOfUse', route: '/terms' },
+      { label: 'footer.items.privacyPolicy', route: '/privacy' },
+      { label: 'footer.items.cookiePolicy', route: '/cookies' },
+      { label: 'footer.items.compliance', route: '/compliance' },
     ],
   },
 ];
