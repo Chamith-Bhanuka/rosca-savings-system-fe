@@ -5,6 +5,7 @@ import type { AppDispatch, RootState } from '../store/store.ts';
 import { toggleTheme } from '../slices/themeSlice.ts';
 import { toggleMenu } from '../slices/menuSlice.ts';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -42,12 +43,12 @@ const Navbar: React.FC = () => {
               className={`absolute -bottom-[2px] left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full ${isDark ? 'bg-[#d4a574]' : 'bg-[#b8894d]'}`}
             ></span>
           </a>
-          <a
-            href="#"
+          <Link
+            to="/login"
             className={`px-6 py-2.5 rounded-full border text-[0.85rem] transition-all ${isDark ? 'border-white/10 bg-white/5 text-[#f2f0ea] hover:bg-[#d4a574]/15 hover:border-[#d4a574]' : 'border-black/10 bg-black/5 text-[#1a1a1a] hover:bg-[#b8894d]/15 hover:border-[#b8894d]'}`}
           >
             {t('navbar.login')}
-          </a>
+          </Link>
         </div>
 
         <button
