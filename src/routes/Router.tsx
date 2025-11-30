@@ -7,6 +7,7 @@ const Home = lazy(() => import('../pages/Home'));
 const Login = lazy(() => import('../pages/Login.tsx'));
 const Register = lazy(() => import('../pages/Register.tsx'));
 const TestSuspend = lazy(() => import('../pages/TestSuspend.tsx'));
+const CreateGroup = lazy(() => import('../pages/CreateGroup.tsx'));
 
 const LoginWrapper = () => {
   const navigate = useNavigate();
@@ -30,6 +31,8 @@ export default function Router() {
           <Route path="/register" element={<RegisterWrapper />} />
 
           <Route path="/test" element={<TestSuspend />} />
+
+          <Route path="/groups/create" element={<CreateGroup />} />
 
           <Route path="/" element={<div>Hello, from router..!</div>} />
         </Routes>
