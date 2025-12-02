@@ -49,5 +49,9 @@
   "home": {
     "exploreGroups": "සමූහ සොයන්න",
     "howItWorks": "ක්‍රියාකරන ආකාරය"
+  },
+
+  "group": {
+    "GroupIdentity": "සමූහ හැඳුනුම"
   }
 }
