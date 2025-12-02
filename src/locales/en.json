@@ -49,5 +49,9 @@
   "home": {
     "exploreGroups": "Explore Groups",
     "howItWorks": "How it Works"
+  },
+
+  "group": {
+    "GroupIdentity": "Group Identity"
   }
 }
