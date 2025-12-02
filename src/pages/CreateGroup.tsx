@@ -156,12 +156,12 @@ const CreateGroup: React.FC = () => {
             <h1
               className={`text-4xl sm:text-5xl font-['Playfair_Display'] font-extrabold mb-2 ${isDark ? 'text-[#d4a574]' : 'text-[#b8894d]'}`}
             >
-              Create New Group
+              {t('group.createNewGroup')}
             </h1>
             <p
               className={`text-lg ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
             >
-              Define your group details and launch your savings circle
+              {t('group.mainDescription')}
             </p>
           </header>
 
@@ -183,7 +183,7 @@ const CreateGroup: React.FC = () => {
                       <h3
                         className={`text-lg font-semibold ${isDark ? 'text-[#f2f0ea]' : 'text-gray-900'}`}
                       >
-                        {t('group.GroupIdentity')}
+                        {t('group.groupIdentity')}
                       </h3>
                     </div>
 
@@ -193,7 +193,7 @@ const CreateGroup: React.FC = () => {
                           htmlFor="name"
                           className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}
                         >
-                          Group Name *
+                          {t('group.groupName')}
                         </label>
                         <input
                           type="text"
@@ -201,7 +201,7 @@ const CreateGroup: React.FC = () => {
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
-                          placeholder="e.g., Office Savings Circle 2025"
+                          placeholder={t('group.namePlh')}
                           className={`w-full px-4 py-3 rounded-lg text-sm font-medium transition-all focus:ring-2 outline-none ${
                             isDark
                               ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-[#d4a574] focus:ring-[#d4a574]/50'
@@ -221,7 +221,7 @@ const CreateGroup: React.FC = () => {
                           htmlFor="description"
                           className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}
                         >
-                          Description (Optional)
+                          {t('group.descriptionOpt')}
                         </label>
                         <textarea
                           id="description"
@@ -229,7 +229,7 @@ const CreateGroup: React.FC = () => {
                           value={formData.description}
                           onChange={handleChange}
                           rows={8}
-                          placeholder="Brief description of the group's goal or members"
+                          placeholder={t('group.descPlh')}
                           className={`w-full px-4 py-3 rounded-lg text-sm font-medium transition-all focus:ring-2 outline-none resize-none ${
                             isDark
                               ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-[#d4a574] focus:ring-[#d4a574]/50'
@@ -249,7 +249,7 @@ const CreateGroup: React.FC = () => {
                       <h3
                         className={`text-lg font-semibold ${isDark ? 'text-[#f2f0ea]' : 'text-gray-900'}`}
                       >
-                        Contribution Plan
+                        {t('group.contributionPlan')}
                       </h3>
                     </div>
 
@@ -259,7 +259,7 @@ const CreateGroup: React.FC = () => {
                           htmlFor="amount"
                           className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}
                         >
-                          Amount per Cycle (LKR) *
+                          {t('group.amountPerCycle')}
                         </label>
                         <input
                           type="number"
@@ -267,7 +267,7 @@ const CreateGroup: React.FC = () => {
                           name="amount"
                           value={formData.amount}
                           onChange={handleChange}
-                          placeholder="e.g., 5000"
+                          placeholder={t('group.amountPlh')}
                           min="1"
                           className={`w-full px-4 py-3 rounded-lg text-sm font-medium transition-all focus:ring-2 outline-none ${
                             isDark
@@ -288,7 +288,7 @@ const CreateGroup: React.FC = () => {
                           htmlFor="frequency"
                           className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}
                         >
-                          Payment Frequency *
+                          {t('group.paymentFrequency')}
                         </label>
                         <select
                           id="frequency"
@@ -301,9 +301,11 @@ const CreateGroup: React.FC = () => {
                               : 'bg-gray-50 border border-gray-300 text-gray-900 focus:border-[#b8894d] focus:ring-[#b8894d]/30'
                           }`}
                         >
-                          <option value="monthly">Monthly</option>
-                          <option value="weekly">Weekly</option>
-                          <option value="biweekly">Bi-Weekly</option>
+                          <option value="monthly">{t('group.monthly')}</option>
+                          <option value="weekly">{t('group.weekly')}</option>
+                          <option value="biweekly">
+                            {t('group.biWeekly')}
+                          </option>
                         </select>
                       </div>
 
@@ -312,7 +314,7 @@ const CreateGroup: React.FC = () => {
                           htmlFor="startDate"
                           className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}
                         >
-                          Start Date *
+                          {t('group.startDate')}
                         </label>
                         <div className="relative">
                           <Calendar
@@ -354,7 +356,7 @@ const CreateGroup: React.FC = () => {
                       <h3
                         className={`text-lg font-semibold ${isDark ? 'text-[#f2f0ea]' : 'text-gray-900'}`}
                       >
-                        Group Size
+                        {t('group.groupSize')}
                       </h3>
                     </div>
 
@@ -363,7 +365,7 @@ const CreateGroup: React.FC = () => {
                         htmlFor="maxCycles"
                         className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}
                       >
-                        Total Members *
+                        {t('group.totalMembers')}
                       </label>
                       <input
                         type="number"
@@ -371,7 +373,7 @@ const CreateGroup: React.FC = () => {
                         name="maxCycles"
                         value={formData.maxCycles}
                         onChange={handleChange}
-                        placeholder="e.g., 10"
+                        placeholder={t('group.maxCyclePlh')}
                         min="2"
                         className={`w-full px-4 py-3 rounded-lg text-sm font-medium transition-all focus:ring-2 outline-none ${
                           isDark
@@ -395,10 +397,11 @@ const CreateGroup: React.FC = () => {
                         <p
                           className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-700'}`}
                         >
-                          This group will run for{' '}
-                          <strong>{formData.maxCycles || 'X'}</strong> cycles,
-                          requiring <strong>{formData.maxCycles || 'X'}</strong>{' '}
-                          members total.
+                          {t('group.thisGroupWillRunFor')}{' '}
+                          <strong>{formData.maxCycles || 'X'}</strong>{' '}
+                          {t('group.cycles')}{' '}
+                          <strong>{formData.maxCycles || 'X'}</strong>{' '}
+                          {t('group.membersTotal')}
                         </p>
                       </div>
                     </div>
@@ -413,7 +416,7 @@ const CreateGroup: React.FC = () => {
                       <h3
                         className={`text-lg font-semibold ${isDark ? 'text-[#f2f0ea]' : 'text-gray-900'}`}
                       >
-                        Join Settings
+                        {t('group.joinSettings')}
                       </h3>
                     </div>
 
@@ -426,14 +429,14 @@ const CreateGroup: React.FC = () => {
                             htmlFor="autoAccept"
                             className={`block text-sm font-semibold mb-1 ${isDark ? 'text-[#f2f0ea]' : 'text-gray-900'}`}
                           >
-                            Auto-Accept Members
+                            {t('group.autoAcceptMembers')}
                           </label>
                           <p
                             className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
                           >
                             {formData.autoAccept
-                              ? 'Members can join instantly without approval'
-                              : 'You must approve each join request'}
+                              ? `${t('group.withoutApprove')}`
+                              : `${t('group.withApprove')}`}
                           </p>
                         </div>
                         <button
@@ -474,7 +477,7 @@ const CreateGroup: React.FC = () => {
                       <h3
                         className={`text-lg font-semibold ${isDark ? 'text-[#f2f0ea]' : 'text-gray-900'}`}
                       >
-                        Summary
+                        {t('group.summary')}
                       </h3>
                     </div>
 
@@ -483,13 +486,13 @@ const CreateGroup: React.FC = () => {
                         <span
                           className={isDark ? 'text-gray-400' : 'text-gray-600'}
                         >
-                          Contribution:
+                          {t('group.contribution')}
                         </span>
                         <span
                           className={`font-semibold ${isDark ? 'text-[#f2f0ea]' : 'text-gray-900'}`}
                         >
                           {formData.amount
-                            ? `LKR ${formData.amount.toLocaleString()}`
+                            ? `${t('group.lkr')} ${formData.amount.toLocaleString()}`
                             : '—'}
                         </span>
                       </div>
@@ -498,7 +501,7 @@ const CreateGroup: React.FC = () => {
                         <span
                           className={isDark ? 'text-gray-400' : 'text-gray-600'}
                         >
-                          Frequency:
+                          {t('group.frequency')}
                         </span>
                         <span
                           className={`font-semibold ${isDark ? 'text-[#f2f0ea]' : 'text-gray-900'}`}
@@ -512,7 +515,7 @@ const CreateGroup: React.FC = () => {
                         <span
                           className={isDark ? 'text-gray-400' : 'text-gray-600'}
                         >
-                          Start Date:
+                          {t('group.startDateSum')}
                         </span>
                         <span
                           className={`font-semibold ${isDark ? 'text-[#f2f0ea]' : 'text-gray-900'}`}
@@ -534,7 +537,7 @@ const CreateGroup: React.FC = () => {
                         <span
                           className={isDark ? 'text-gray-400' : 'text-gray-600'}
                         >
-                          Total Members:
+                          {t('group.totalMembersSum')}
                         </span>
                         <span
                           className={`font-semibold ${isDark ? 'text-[#f2f0ea]' : 'text-gray-900'}`}
@@ -547,7 +550,7 @@ const CreateGroup: React.FC = () => {
                         <span
                           className={isDark ? 'text-gray-400' : 'text-gray-600'}
                         >
-                          Auto-Accept:
+                          {t('group.autoAccept')}
                         </span>
                         <span
                           className={`font-semibold ${
@@ -560,7 +563,9 @@ const CreateGroup: React.FC = () => {
                                 : 'text-gray-600'
                           }`}
                         >
-                          {formData.autoAccept ? 'Enabled' : 'Disabled'}
+                          {formData.autoAccept
+                            ? `${t('group.enabled')}`
+                            : `${t('group.disabled')}`}
                         </span>
                       </div>
 
@@ -571,13 +576,13 @@ const CreateGroup: React.FC = () => {
                           <span
                             className={`font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}
                           >
-                            Total Pool:
+                            {t('group.totalPool')}
                           </span>
                           <span
                             className={`text-xl font-bold ${isDark ? 'text-[#d4a574]' : 'text-[#b8894d]'}`}
                           >
                             {totalPool > 0
-                              ? `LKR ${totalPool.toLocaleString()}`
+                              ? `${t('group.lkr')} ${totalPool.toLocaleString()}`
                               : '—'}
                           </span>
                         </div>
@@ -627,7 +632,7 @@ const CreateGroup: React.FC = () => {
                   ) : (
                     <>
                       <CheckCircle size={20} className="mr-2" />
-                      Create Group
+                      {t('group.createGroup')}
                     </>
                   )}
                 </button>
@@ -635,7 +640,7 @@ const CreateGroup: React.FC = () => {
                 <p
                   className={`text-sm text-center mt-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
                 >
-                  By creating this group, you become the Group Organizer
+                  {t('group.formEnd')}
                 </p>
               </div>
             </div>
