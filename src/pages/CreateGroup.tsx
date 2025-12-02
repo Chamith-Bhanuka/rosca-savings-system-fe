@@ -48,7 +48,7 @@ const CreateGroup: React.FC = () => {
 
   useEffect(() => {
     document.body.setAttribute('data-theme', theme);
-    document.title = 'Create Seettuwa Group';
+    document.title = 'Create Group | Seettuwa';
   }, [theme]);
 
   const handleChange = useCallback(
