@@ -17,6 +17,8 @@ import Navbar from '../components/NavBar.tsx';
 import Footer from '../components/Footer';
 import MegaMenu from '../components/MegaMenu.tsx';
 
+import { useTranslation } from 'react-i18next';
+
 interface GroupData {
   name: string;
   description: string;
@@ -45,6 +47,8 @@ const CreateGroup: React.FC = () => {
   const [errors, setErrors] = useState<
     Partial<Record<keyof GroupData, string>>
   >({});
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     document.body.setAttribute('data-theme', theme);
@@ -179,7 +183,7 @@ const CreateGroup: React.FC = () => {
                       <h3
                         className={`text-lg font-semibold ${isDark ? 'text-[#f2f0ea]' : 'text-gray-900'}`}
                       >
-                        Group Identity
+                        {t('group.GroupIdentity')}
                       </h3>
                     </div>
 
