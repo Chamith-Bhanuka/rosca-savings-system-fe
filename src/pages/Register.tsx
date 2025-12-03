@@ -10,11 +10,30 @@ interface RegisterProps {
   onNavigate: (page: 'home' | 'login' | 'register') => void;
 }
 
+const calculatePasswordStrength = (password: string): number => {
+  if (password.length === 0) return 0;
+
+  let strength = 0;
+
+  // Length check (0-2 points)
+  if (password.length >= 8) strength++;
+  if (password.length >= 12) strength++;
+
+  // Has lowercase and uppercase
+  if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+
+  // Has special characters
+  if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+  return Math.min(4, strength);
+};
+
 const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [passwordStrength, setPasswordStrength] = useState<number>(0);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -29,8 +48,39 @@ const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
     document.title = 'Register | Seettuwa';
   }, []);
 
+  useEffect(() => {
+    setPasswordStrength(calculatePasswordStrength(password));
+  }, [password]);
+
+  const getStrengthColor = (index: number) => {
+    if (index >= passwordStrength) {
+      return isDark ? 'bg-white/10' : 'bg-black/10';
+    }
+
+    if (passwordStrength === 1) return 'bg-red-500';
+    if (passwordStrength === 2) return 'bg-orange-500';
+    if (passwordStrength === 3) return 'bg-yellow-500';
+    if (passwordStrength === 4) return isDark ? 'bg-[#d4a574]' : 'bg-[#b8894d]';
+
+    return isDark ? 'bg-white/10' : 'bg-black/10';
+  };
+
+  const getStrengthText = () => {
+    if (password.length === 0) return '';
+    if (passwordStrength === 1) return 'Weak';
+    if (passwordStrength === 2) return 'Fair';
+    if (passwordStrength === 3) return 'Good';
+    if (passwordStrength === 4) return 'Strong';
+    return '';
+  };
+
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
+
+    if (passwordStrength < 2) {
+      alert('Please use a stronger password');
+      return;
+    }
 
     try {
       await register(firstName, lastName, email, password);
@@ -235,20 +285,36 @@ const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
                     </button>
                   </div>
                   {/* Password strength indicator */}
-                  <div className="flex gap-1 mt-2">
-                    <div
-                      className={`h-1 flex-1 rounded-full ${isDark ? 'bg-white/10' : 'bg-black/10'}`}
-                    ></div>
-                    <div
-                      className={`h-1 flex-1 rounded-full ${isDark ? 'bg-white/10' : 'bg-black/10'}`}
-                    ></div>
-                    <div
-                      className={`h-1 flex-1 rounded-full ${isDark ? 'bg-white/10' : 'bg-black/10'}`}
-                    ></div>
-                    <div
-                      className={`h-1 flex-1 rounded-full ${isDark ? 'bg-white/10' : 'bg-black/10'}`}
-                    ></div>
-                  </div>
+                  {/* Replace existing password strength bars with: */}
+                  {password.length > 0 && (
+                    <>
+                      <div className="flex gap-1 mt-2">
+                        {[0, 1, 2, 3].map((index) => (
+                          <div
+                            key={index}
+                            className={`h-1 flex-1 rounded-full transition-all duration-300 ${getStrengthColor(index)}`}
+                          ></div>
+                        ))}
+                      </div>
+                      <p
+                        className={`text-xs mt-1 ${
+                          passwordStrength === 1
+                            ? 'text-red-500'
+                            : passwordStrength === 2
+                              ? 'text-orange-500'
+                              : passwordStrength === 3
+                                ? 'text-yellow-500'
+                                : passwordStrength === 4
+                                  ? isDark
+                                    ? 'text-[#d4a574]'
+                                    : 'text-[#b8894d]'
+                                  : 'text-gray-500'
+                        }`}
+                      >
+                        {getStrengthText()}
+                      </p>
+                    </>
+                  )}
                 </div>
 
                 {/* Submit */}
