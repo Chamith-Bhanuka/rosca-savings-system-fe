@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Eye, EyeOff, Moon, Sun } from 'lucide-react';
+import { Eye, EyeOff, Moon, Sun, Loader2 } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../store/store.ts';
 import { toggleTheme } from '../slices/themeSlice.ts';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../services/auth.service.ts';
+import toast from 'react-hot-toast';
 
 interface RegisterProps {
   onNavigate: (page: 'home' | 'login' | 'register') => void;
@@ -12,19 +13,14 @@ interface RegisterProps {
 
 const calculatePasswordStrength = (password: string): number => {
   if (password.length === 0) return 0;
-
   let strength = 0;
-
   // Length check (0-2 points)
   if (password.length >= 8) strength++;
   if (password.length >= 12) strength++;
-
   // Has lowercase and uppercase
   if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
-
   // Has special characters
   if (/[^A-Za-z0-9]/.test(password)) strength++;
-
   return Math.min(4, strength);
 };
 
@@ -34,6 +30,7 @@ const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordStrength, setPasswordStrength] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -74,18 +71,65 @@ const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
     return '';
   };
 
+  // only letters
+  const nameRegex = /^[a-zA-Z\s]{2,50}$/;
+  // email validation
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
 
-    if (passwordStrength < 2) {
-      alert('Please use a stronger password');
+    // if (passwordStrength < 2) {
+    //   alert('Please use a stronger password');
+    //   return;
+    // }
+
+    if (!firstName.trim()) {
+      toast.error('Please enter your first name');
       return;
     }
 
+    if (!nameRegex.test(firstName)) {
+      toast.error('First name can contain letters only');
+      return;
+    }
+
+    if (!lastName.trim()) {
+      toast.error('Please enter your last name');
+      return;
+    }
+
+    if (!nameRegex.test(lastName)) {
+      toast.error('Last name can contain letters only');
+      return;
+    }
+
+    if (!email.trim()) {
+      toast.error('Please enter your email');
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
+    if (!password) {
+      toast.error('Please enter your password');
+      return;
+    }
+
+    setIsLoading(true);
+
     try {
       await register(firstName, lastName, email, password);
-      navigate('/login');
-    } catch (error) {
+      toast.success('Register Successfully!');
+      setTimeout(() => {
+        navigate('/login');
+      }, 2500);
+    } catch (error: any) {
+      setIsLoading(false);
+      toast.error(error.message || 'Something went wrong');
       console.error(error);
     }
   };
@@ -285,7 +329,6 @@ const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
                     </button>
                   </div>
                   {/* Password strength indicator */}
-                  {/* Replace existing password strength bars with: */}
                   {password.length > 0 && (
                     <>
                       <div className="flex gap-1 mt-2">
@@ -318,11 +361,30 @@ const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
                 </div>
 
                 {/* Submit */}
+                {/*<button*/}
+                {/*  onClick={handleSubmit}*/}
+                {/*  className={`w-full py-3 rounded-lg font-semibold text-white shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all mt-2 bg-gradient-to-r ${isDark ? 'from-[#d4a574] to-[#a3784e] shadow-[#d4a574]/30' : 'from-[#b8894d] to-[#8f6a3b] shadow-[#b8894d]/30'}`}*/}
+                {/*>*/}
+                {/*  Create Account*/}
+                {/*</button>*/}
+
                 <button
                   onClick={handleSubmit}
-                  className={`w-full py-3 rounded-lg font-semibold text-white shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all mt-2 bg-gradient-to-r ${isDark ? 'from-[#d4a574] to-[#a3784e] shadow-[#d4a574]/30' : 'from-[#b8894d] to-[#8f6a3b] shadow-[#b8894d]/30'}`}
+                  disabled={isLoading}
+                  className={`w-full py-3 rounded-lg font-semibold text-white shadow-lg hover:shadow-xl transition-all mt-2 bg-gradient-to-r flex items-center justify-center gap-2 ${
+                    isDark
+                      ? 'from-[#d4a574] to-[#a3784e] shadow-[#d4a574]/30'
+                      : 'from-[#b8894d] to-[#8f6a3b] shadow-[#b8894d]/30'
+                  } ${isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:scale-[1.02]'}`}
                 >
-                  Create Account
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Creating...
+                    </>
+                  ) : (
+                    'Create Account'
+                  )}
                 </button>
 
                 {/* Footer */}
