@@ -3,12 +3,20 @@ import { Eye, EyeOff, Moon, Sun } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../store/store.ts';
 import { toggleTheme } from '../slices/themeSlice.ts';
+import { useNavigate } from 'react-router-dom';
+import { register } from '../services/auth.service.ts';
 
 interface RegisterProps {
   onNavigate: (page: 'home' | 'login' | 'register') => void;
 }
 
 const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   const isDark = useSelector(
@@ -21,9 +29,15 @@ const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
     document.title = 'Register | Seettuwa';
   }, []);
 
-  const handleSubmit = (e: React.MouseEvent) => {
+  const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
-    // Handle registration logic here
+
+    try {
+      await register(firstName, lastName, email, password);
+      navigate('/login');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -165,8 +179,10 @@ const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
                     </label>
                     <input
                       type="text"
-                      placeholder="John"
+                      placeholder="Ishara"
                       className={`w-full px-3 py-2.5 rounded-lg border outline-none text-sm transition-all focus:scale-[1.01] ${isDark ? 'bg-white/[0.02] border-white/10 focus:border-[#d4a574] text-white placeholder-gray-600' : 'bg-black/[0.02] border-black/10 focus:border-[#b8894d] text-black placeholder-gray-400'}`}
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
                     />
                   </div>
                   <div className="space-y-1">
@@ -175,8 +191,10 @@ const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
                     </label>
                     <input
                       type="text"
-                      placeholder="Doe"
+                      placeholder="Perera"
                       className={`w-full px-3 py-2.5 rounded-lg border outline-none text-sm transition-all focus:scale-[1.01] ${isDark ? 'bg-white/[0.02] border-white/10 focus:border-[#d4a574] text-white placeholder-gray-600' : 'bg-black/[0.02] border-black/10 focus:border-[#b8894d] text-black placeholder-gray-400'}`}
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
                     />
                   </div>
                 </div>
@@ -190,6 +208,8 @@ const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
                     type="email"
                     placeholder="you@example.com"
                     className={`w-full px-3 py-2.5 rounded-lg border outline-none text-sm transition-all focus:scale-[1.01] ${isDark ? 'bg-white/[0.02] border-white/10 focus:border-[#d4a574] text-white placeholder-gray-600' : 'bg-black/[0.02] border-black/10 focus:border-[#b8894d] text-black placeholder-gray-400'}`}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
 
@@ -203,6 +223,8 @@ const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
                       type={showPassword ? 'text' : 'password'}
                       placeholder="••••••••"
                       className={`w-full px-3 py-2.5 rounded-lg border outline-none text-sm transition-all pr-10 focus:scale-[1.01] ${isDark ? 'bg-white/[0.02] border-white/10 focus:border-[#d4a574] text-white placeholder-gray-600' : 'bg-black/[0.02] border-black/10 focus:border-[#b8894d] text-black placeholder-gray-400'}`}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <button
                       type="button"
