@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Eye, EyeOff, ArrowRight, Moon, Sun } from 'lucide-react';
+import { Eye, EyeOff, ArrowRight, Moon, Sun, Loader2 } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../store/store.ts';
 import { toggleTheme } from '../slices/themeSlice.ts';
+import toast from 'react-hot-toast';
+import { login } from '../services/auth.service.ts';
+import { useNavigate } from 'react-router-dom';
+import type { ApiError } from '../services/api.ts';
 
-interface LoginProps {
-  onNavigate: (page: 'home' | 'login' | 'register') => void;
-}
+const Login: React.FC = () => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
-const Login: React.FC<LoginProps> = ({ onNavigate }) => {
   const dispatch = useDispatch();
 
   const isDark = useSelector(
@@ -21,9 +26,40 @@ const Login: React.FC<LoginProps> = ({ onNavigate }) => {
     document.title = 'Login | Seettuwa';
   }, []);
 
-  const handleSubmit = (e: React.MouseEvent) => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
-    // Handle login logic here
+
+    if (!email.trim()) {
+      toast.error('Please enter your email');
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
+    if (!password) {
+      toast.error('Please enter your password');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      await login(email, password);
+      toast.success('Successfully logged in!');
+      setTimeout(() => {
+        navigate('/home');
+      }, 1500);
+    } catch (error: unknown) {
+      setIsLoading(false);
+      const err = error as ApiError;
+      toast.error(err.message || 'Something went wrong');
+      console.error(error);
+    }
   };
 
   const handleGoogleSignIn = () => {
@@ -173,6 +209,8 @@ const Login: React.FC<LoginProps> = ({ onNavigate }) => {
                     type="email"
                     placeholder="you@example.com"
                     className={`w-full px-3 py-2.5 rounded-lg border outline-none text-sm transition-all focus:scale-[1.01] ${isDark ? 'bg-white/[0.02] border-white/10 focus:border-[#d4a574] text-white placeholder-gray-600' : 'bg-black/[0.02] border-black/10 focus:border-[#b8894d] text-black placeholder-gray-400'}`}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
 
@@ -194,6 +232,8 @@ const Login: React.FC<LoginProps> = ({ onNavigate }) => {
                       type={showPassword ? 'text' : 'password'}
                       placeholder="••••••••"
                       className={`w-full px-3 py-2.5 rounded-lg border outline-none text-sm transition-all pr-10 focus:scale-[1.01] ${isDark ? 'bg-white/[0.02] border-white/10 focus:border-[#d4a574] text-white placeholder-gray-600' : 'bg-black/[0.02] border-black/10 focus:border-[#b8894d] text-black placeholder-gray-400'}`}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <button
                       type="button"
@@ -208,9 +248,23 @@ const Login: React.FC<LoginProps> = ({ onNavigate }) => {
                 {/* Submit */}
                 <button
                   onClick={handleSubmit}
-                  className={`w-full py-3 rounded-lg font-semibold text-white shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all bg-gradient-to-r flex items-center justify-center gap-2 ${isDark ? 'from-[#d4a574] to-[#a3784e] shadow-[#d4a574]/30' : 'from-[#b8894d] to-[#8f6a3b] shadow-[#b8894d]/30'}`}
+                  className={`w-full py-3 rounded-lg font-semibold text-white shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all bg-gradient-to-r flex items-center justify-center gap-2 ${
+                    isDark
+                      ? 'from-[#d4a574] to-[#a3784e] shadow-[#d4a574]/30'
+                      : 'from-[#b8894d] to-[#8f6a3b] shadow-[#b8894d]/30'
+                  } ${isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:scale-[1.02]'}`}
                 >
-                  Sign In <ArrowRight size={18} />
+                  {/*Sign In <ArrowRight size={18} />*/}
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      signing in...
+                    </>
+                  ) : (
+                    <>
+                      Sign In <ArrowRight size={18} />
+                    </>
+                  )}
                 </button>
 
                 {/* Footer */}
@@ -222,7 +276,7 @@ const Login: React.FC<LoginProps> = ({ onNavigate }) => {
                   </span>
                   <button
                     type="button"
-                    onClick={() => onNavigate('register')}
+                    onClick={() => navigate('/register')}
                     className={`font-medium hover:underline ${isDark ? 'text-[#d4a574]' : 'text-[#b8894d]'}`}
                   >
                     Register Now
