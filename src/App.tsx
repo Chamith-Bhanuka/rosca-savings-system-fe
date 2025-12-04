@@ -9,6 +9,7 @@ import { Toaster } from 'react-hot-toast';
 
 const App: React.FC = () => {
   const lang = useSelector((s: RootState) => s.language.value);
+  const theme = useSelector((s: RootState) => s.theme.value);
 
   useEffect(() => {
     i18n.changeLanguage(lang);
@@ -16,7 +17,16 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Toaster position="top-right" />
+      {/*<Toaster position="top-right" />*/}
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: theme === 'dark' ? '#1f1f1f' : '#ffffff',
+            color: theme === 'dark' ? '#f2f2f2' : '#1a1a1a',
+          },
+        }}
+      />
       <Router />
     </>
   );
