@@ -5,6 +5,10 @@ const api = axios.create({
   withCredentials: true,
 });
 
+export interface ApiError {
+  message: string;
+}
+
 const PUBLIC_ENDPOINTS = ['/auth/login', '/auth/register'];
 
 api.interceptors.request.use((config) => {
