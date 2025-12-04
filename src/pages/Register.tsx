@@ -6,10 +6,7 @@ import { toggleTheme } from '../slices/themeSlice.ts';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../services/auth.service.ts';
 import toast from 'react-hot-toast';
-
-interface RegisterProps {
-  onNavigate: (page: 'home' | 'login' | 'register') => void;
-}
+import type { ApiError } from '../services/api.ts';
 
 const calculatePasswordStrength = (password: string): number => {
   if (password.length === 0) return 0;
@@ -24,7 +21,7 @@ const calculatePasswordStrength = (password: string): number => {
   return Math.min(4, strength);
 };
 
-const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
+const Register: React.FC = () => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -127,9 +124,10 @@ const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
       setTimeout(() => {
         navigate('/login');
       }, 2500);
-    } catch (error: any) {
+    } catch (error: unknown) {
       setIsLoading(false);
-      toast.error(error.message || 'Something went wrong');
+      const err = error as ApiError;
+      toast.error(err.message || 'Something went wrong');
       console.error(error);
     }
   };
@@ -396,7 +394,7 @@ const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
                   </span>
                   <button
                     type="button"
-                    onClick={() => onNavigate('login')}
+                    onClick={() => navigate('/login')}
                     className={`font-medium hover:underline ${isDark ? 'text-[#d4a574]' : 'text-[#b8894d]'}`}
                   >
                     Log In
