@@ -4,14 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../store/store.ts';
 import { toggleTheme } from '../slices/themeSlice.ts';
 import toast from 'react-hot-toast';
-import { login } from '../services/auth.service.ts';
+import { getMyDetails, login } from '../services/auth.service.ts';
+import { useAuth } from '../context/authContext.tsx';
 import { useNavigate } from 'react-router-dom';
 import type { ApiError } from '../services/api.ts';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [email, setEmail] = useState<string>('userone@example.com');
+  const [password, setPassword] = useState<string>('1234');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { setUser } = useAuth();
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -49,7 +51,20 @@ const Login: React.FC = () => {
     setIsLoading(true);
 
     try {
-      await login(email, password);
+      const res = await login(email, password);
+      localStorage.setItem('accessToken', res.accessToken);
+
+      const me = await getMyDetails();
+      const userData = me.data;
+      console.log(userData);
+
+      setUser({
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email,
+        role: userData.role,
+      });
+
       toast.success('Successfully logged in!');
       setTimeout(() => {
         navigate('/home');
