@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { getMyDetails } from '../services/auth.service.ts';
 import Loader from '../components/Loader.tsx';
+import { logout_user } from '../services/auth.service.ts';
 
 type AuthUser = {
   firstName: string;
@@ -45,8 +46,14 @@ export const AuthProvider = ({ children }: any) => {
     return <Loader />;
   }
 
+  const logout = async () => {
+    await logout_user();
+    localStorage.removeItem('accessToken');
+    setUser(null);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, setUser, loading }}>
+    <AuthContext.Provider value={{ user, setUser, loading, logout }}>
       {children}
     </AuthContext.Provider>
   );
