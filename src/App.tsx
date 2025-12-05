@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import type { RootState } from './store/store.ts';
 import i18n from './i18n.ts';
 import { Toaster } from 'react-hot-toast';
+import { AuthProvider } from './context/authContext.tsx';
 
 const App: React.FC = () => {
   const lang = useSelector((s: RootState) => s.language.value);
@@ -16,7 +17,7 @@ const App: React.FC = () => {
   }, [lang]);
 
   return (
-    <>
+    <AuthProvider>
       {/*<Toaster position="top-right" />*/}
       <Toaster
         position="top-right"
@@ -28,7 +29,7 @@ const App: React.FC = () => {
         }}
       />
       <Router />
-    </>
+    </AuthProvider>
   );
 };
 
