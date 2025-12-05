@@ -43,6 +43,7 @@
   "navbar": {
     "dashboard": "Dashboard",
     "login": "Log In",
+    "logout": "Log Out",
     "menu": "Menu"
   },
 
