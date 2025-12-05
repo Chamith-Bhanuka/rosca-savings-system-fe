@@ -7,6 +7,7 @@ import { toggleMenu } from '../slices/menuSlice.ts';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/authContext.tsx';
+import toast from 'react-hot-toast';
 
 const Navbar: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,8 +19,13 @@ const Navbar: React.FC = () => {
   const { t } = useTranslation();
 
   const handleLogout = async () => {
-    await logout();
-    navigate('/home');
+    try {
+      await logout();
+      navigate('/home');
+      toast.success('You have logged out successfully');
+    } catch (err: any) {
+      toast.error(err.message || 'Something went wrong during logout');
+    }
   };
 
   return (
