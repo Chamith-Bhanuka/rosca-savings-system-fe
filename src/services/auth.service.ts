@@ -27,3 +27,8 @@ export const getMyDetails = async () => {
   const res = await api.get('/auth/me');
   return res.data;
 };
+
+export const logout_user = async () => {
+  const res = await api.post('/auth/logout', {}, { withCredentials: true });
+  return res.data;
+};
