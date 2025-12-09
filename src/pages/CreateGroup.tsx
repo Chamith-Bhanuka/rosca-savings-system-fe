@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store.ts';
 import {
@@ -12,35 +12,38 @@ import {
   Calendar,
   Zap,
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 import Navbar from '../components/NavBar.tsx';
 import Footer from '../components/Footer';
 import MegaMenu from '../components/MegaMenu.tsx';
 
 import { useTranslation } from 'react-i18next';
+import { createGroup } from '../services/group.service.ts';
+import type { ApiError } from '../services/api.ts';
 
 interface GroupData {
-  name: string;
+  groupName: string;
   description: string;
-  amount: number | '';
-  frequency: 'monthly' | 'weekly' | 'biweekly';
-  maxCycles: number | '';
+  amountPerCycle: number | '';
+  paymentFrequency: 'monthly' | 'weekly' | 'biweekly';
+  totalMembers: number | '';
   startDate: string;
   autoAccept: boolean;
 }
 
 const initialFormData: GroupData = {
-  name: '',
+  groupName: '',
   description: '',
-  amount: '',
-  frequency: 'monthly',
-  maxCycles: '',
+  amountPerCycle: '',
+  paymentFrequency: 'monthly',
+  totalMembers: '',
   startDate: '',
   autoAccept: false,
 };
 
 const CreateGroup: React.FC = () => {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const theme = useSelector((state: RootState) => state.theme.value);
   const [formData, setFormData] = useState<GroupData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -90,53 +93,75 @@ const CreateGroup: React.FC = () => {
   };
 
   const validate = (): boolean => {
-    const newErrors: Partial<Record<keyof GroupData, string>> = {};
-
-    if (!formData.name || formData.name.trim().length < 3) {
-      newErrors.name = 'Group name must be at least 3 characters';
+    if (!formData.groupName || formData.groupName.trim().length < 3) {
+      toast.error('Group name must be at least 3 characters');
+      return false;
     }
 
-    if (!formData.amount || formData.amount <= 0) {
-      newErrors.amount = 'Contribution amount is required';
+    if (!formData.amountPerCycle || formData.amountPerCycle <= 0) {
+      toast.error('Contribution amount is required');
+      return false;
     }
 
-    if (!formData.maxCycles || formData.maxCycles < 2) {
-      newErrors.maxCycles = 'Minimum 2 members required';
+    if (!formData.totalMembers || formData.totalMembers < 2) {
+      toast.error('Minimum 2 members required');
+      return false;
     }
 
     if (!formData.startDate) {
-      newErrors.startDate = 'Start date is required';
+      toast.error('Start date is required');
+      return false;
     } else {
       const selectedDate = new Date(formData.startDate);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       if (selectedDate < today) {
-        newErrors.startDate = 'Start date cannot be in the past';
+        toast.error('Start date cannot be in the past');
+        return false;
       }
     }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return true;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validate()) return;
 
     setIsSubmitting(true);
 
-    console.log('Group Data Submitted:', formData);
+    console.log(formData.groupName);
+    console.log(formData.description);
+    console.log(formData.amountPerCycle);
+    console.log(formData.paymentFrequency);
+    console.log(formData.startDate);
+    console.log(formData.totalMembers);
+    console.log(formData.autoAccept);
 
-    setTimeout(() => {
+    try {
+      await createGroup(
+        formData.groupName,
+        formData.description,
+        Number(formData.amountPerCycle),
+        formData.paymentFrequency.toUpperCase(),
+        new Date(formData.startDate),
+        Number(formData.totalMembers),
+        formData.autoAccept
+      );
+
+      toast.success('group created successfully!');
+    } catch (error: unknown) {
+      console.error('error: ', error);
+      const err = error as ApiError;
+      toast.error(err.message || 'Something went wrong');
+    } finally {
       setIsSubmitting(false);
-      const newGroupId = 'group-' + Math.floor(Math.random() * 900 + 100);
-      navigate(`/group/${newGroupId}`);
-    }, 1500);
+    }
   };
 
   const totalPool =
-    (Number(formData.amount) || 0) * (Number(formData.maxCycles) || 0);
+    (Number(formData.amountPerCycle) || 0) *
+    (Number(formData.totalMembers) || 0);
 
   const isDark = theme === 'dark';
 
@@ -198,20 +223,20 @@ const CreateGroup: React.FC = () => {
                         <input
                           type="text"
                           id="name"
-                          name="name"
-                          value={formData.name}
+                          name="groupName"
+                          value={formData.groupName}
                           onChange={handleChange}
                           placeholder={t('group.namePlh')}
                           className={`w-full px-4 py-3 rounded-lg text-sm font-medium transition-all focus:ring-2 outline-none ${
                             isDark
                               ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-[#d4a574] focus:ring-[#d4a574]/50'
                               : 'bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-400 focus:border-[#b8894d] focus:ring-[#b8894d]/30'
-                          } ${errors.name ? 'border-red-500' : ''}`}
+                          } ${errors.groupName ? 'border-red-500' : ''}`}
                         />
-                        {errors.name && (
+                        {errors.groupName && (
                           <p className="mt-1 text-sm text-red-500 flex items-center">
                             <AlertCircle size={14} className="mr-1" />
-                            {errors.name}
+                            {errors.groupName}
                           </p>
                         )}
                       </div>
@@ -264,8 +289,8 @@ const CreateGroup: React.FC = () => {
                         <input
                           type="number"
                           id="amount"
-                          name="amount"
-                          value={formData.amount}
+                          name="amountPerCycle"
+                          value={formData.amountPerCycle}
                           onChange={handleChange}
                           placeholder={t('group.amountPlh')}
                           min="1"
@@ -273,12 +298,12 @@ const CreateGroup: React.FC = () => {
                             isDark
                               ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-[#d4a574] focus:ring-[#d4a574]/50'
                               : 'bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-400 focus:border-[#b8894d] focus:ring-[#b8894d]/30'
-                          } ${errors.amount ? 'border-red-500' : ''}`}
+                          } ${errors.amountPerCycle ? 'border-red-500' : ''}`}
                         />
-                        {errors.amount && (
+                        {errors.amountPerCycle && (
                           <p className="mt-1 text-sm text-red-500 flex items-center">
                             <AlertCircle size={14} className="mr-1" />
-                            {errors.amount}
+                            {errors.amountPerCycle}
                           </p>
                         )}
                       </div>
@@ -292,8 +317,8 @@ const CreateGroup: React.FC = () => {
                         </label>
                         <select
                           id="frequency"
-                          name="frequency"
-                          value={formData.frequency}
+                          name="paymentFrequency"
+                          value={formData.paymentFrequency}
                           onChange={handleChange}
                           className={`w-full px-4 py-3 rounded-lg text-sm font-medium transition-all focus:ring-2 outline-none ${
                             isDark
@@ -301,9 +326,9 @@ const CreateGroup: React.FC = () => {
                               : 'bg-gray-50 border border-gray-300 text-gray-900 focus:border-[#b8894d] focus:ring-[#b8894d]/30'
                           }`}
                         >
-                          <option value="monthly">{t('group.monthly')}</option>
-                          <option value="weekly">{t('group.weekly')}</option>
-                          <option value="biweekly">
+                          <option value="MONTHLY">{t('group.monthly')}</option>
+                          <option value="WEEKLY">{t('group.weekly')}</option>
+                          <option value="BI-WEEKLY">
                             {t('group.biWeekly')}
                           </option>
                         </select>
@@ -370,8 +395,8 @@ const CreateGroup: React.FC = () => {
                       <input
                         type="number"
                         id="maxCycles"
-                        name="maxCycles"
-                        value={formData.maxCycles}
+                        name="totalMembers"
+                        value={formData.totalMembers}
                         onChange={handleChange}
                         placeholder={t('group.maxCyclePlh')}
                         min="2"
@@ -379,12 +404,12 @@ const CreateGroup: React.FC = () => {
                           isDark
                             ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-[#d4a574] focus:ring-[#d4a574]/50'
                             : 'bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-400 focus:border-[#b8894d] focus:ring-[#b8894d]/30'
-                        } ${errors.maxCycles ? 'border-red-500' : ''}`}
+                        } ${errors.totalMembers ? 'border-red-500' : ''}`}
                       />
-                      {errors.maxCycles && (
+                      {errors.totalMembers && (
                         <p className="mt-1 text-sm text-red-500 flex items-center">
                           <AlertCircle size={14} className="mr-1" />
-                          {errors.maxCycles}
+                          {errors.totalMembers}
                         </p>
                       )}
 
@@ -398,9 +423,9 @@ const CreateGroup: React.FC = () => {
                           className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-700'}`}
                         >
                           {t('group.thisGroupWillRunFor')}{' '}
-                          <strong>{formData.maxCycles || 'X'}</strong>{' '}
+                          <strong>{formData.totalMembers || 'X'}</strong>{' '}
                           {t('group.cycles')}{' '}
-                          <strong>{formData.maxCycles || 'X'}</strong>{' '}
+                          <strong>{formData.totalMembers || 'X'}</strong>{' '}
                           {t('group.membersTotal')}
                         </p>
                       </div>
@@ -491,8 +516,8 @@ const CreateGroup: React.FC = () => {
                         <span
                           className={`font-semibold ${isDark ? 'text-[#f2f0ea]' : 'text-gray-900'}`}
                         >
-                          {formData.amount
-                            ? `${t('group.lkr')} ${formData.amount.toLocaleString()}`
+                          {formData.amountPerCycle
+                            ? `${t('group.lkr')} ${formData.amountPerCycle.toLocaleString()}`
                             : '—'}
                         </span>
                       </div>
@@ -506,8 +531,8 @@ const CreateGroup: React.FC = () => {
                         <span
                           className={`font-semibold ${isDark ? 'text-[#f2f0ea]' : 'text-gray-900'}`}
                         >
-                          {formData.frequency.charAt(0).toUpperCase() +
-                            formData.frequency.slice(1)}
+                          {formData.paymentFrequency.charAt(0).toUpperCase() +
+                            formData.paymentFrequency.slice(1)}
                         </span>
                       </div>
 
@@ -542,7 +567,7 @@ const CreateGroup: React.FC = () => {
                         <span
                           className={`font-semibold ${isDark ? 'text-[#f2f0ea]' : 'text-gray-900'}`}
                         >
-                          {formData.maxCycles || '—'}
+                          {formData.totalMembers || '—'}
                         </span>
                       </div>
 
