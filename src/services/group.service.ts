@@ -1,14 +1,3 @@
-// const {
-//     groupName,
-//     description,
-//     amountPerCycle,
-//     paymentFrequency,
-//     startDate,
-//     totalMembers,
-//     autoAccept,
-//     settings = {},
-// } = req.body;
-
 import api from './api.ts';
 
 export const createGroup = async (
@@ -29,5 +18,10 @@ export const createGroup = async (
     totalMembers,
     autoAccept,
   });
+  return res.data;
+};
+
+export const getAllGroups = async (page: number, limit: number) => {
+  const res = await api.get(`/group?page=${page}&limit=${limit}`);
   return res.data;
 };
