@@ -41,7 +41,7 @@ export default function Router() {
             }
           />
 
-          <Route path="/join" element={<JoinGroup />} />
+          <Route path="/groups/join" element={<JoinGroup />} />
 
           <Route path="/" element={<div>Hello, from router..!</div>} />
         </Routes>
