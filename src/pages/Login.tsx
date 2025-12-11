@@ -63,6 +63,7 @@ const Login: React.FC = () => {
         lastName: userData.lastName,
         email: userData.email,
         role: userData.role,
+        id: userData._id,
       });
 
       toast.success('Successfully logged in!');
