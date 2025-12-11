@@ -25,3 +25,9 @@ export const getAllGroups = async (page: number, limit: number) => {
   const res = await api.get(`/group?page=${page}&limit=${limit}`);
   return res.data;
 };
+
+export const joinUser = async (group: any) => {
+  console.log(group.id);
+  const res = await api.post(`/group/${group.id}/join`);
+  return res.data;
+};
