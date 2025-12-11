@@ -8,6 +8,7 @@ type AuthUser = {
   lastName: string;
   email: string;
   role: string;
+  id: string;
 };
 
 const AuthContext = createContext<any>(null);
@@ -32,6 +33,7 @@ export const AuthProvider = ({ children }: any) => {
           lastName: userData.lastName,
           email: userData.email,
           role: userData.role,
+          id: userData._id,
         });
       })
       .catch(() => {
