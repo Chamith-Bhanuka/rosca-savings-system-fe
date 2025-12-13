@@ -13,78 +13,16 @@ import {
   Star,
   Lock,
   UserPlus,
+  Crown,
 } from 'lucide-react';
 
-import Navbar from '../../../../RAD_Final_Project/ROSCA-fe/src/components/NavBar.tsx';
-import Footer from '../../../../RAD_Final_Project/ROSCA-fe/src/components/Footer.tsx';
+import Navbar from '../components/NavBar.tsx';
+import Footer from '../components/Footer';
 import Toast from '../components/Toast.tsx';
-
-// Mock data for groups
-const MOCK_GROUPS = [
-  {
-    id: 1,
-    name: 'Office Savings Circle 2025',
-    description:
-      'Monthly savings group for office colleagues. Transparent bidding system.',
-    amount: 5000,
-    frequency: 'monthly',
-    currentCycle: 3,
-    maxCycles: 12,
-    members: 8,
-    maxMembers: 12,
-    createdBy: 'Rajesh Kumar',
-    trustScore: 4.8,
-    status: 'open',
-    badges: ['Trusted', 'Premium'],
-  },
-  {
-    id: 2,
-    name: 'Friends Weekly Chit Fund',
-    description:
-      'Quick weekly rotations for close friends. Small amounts, fast cycles.',
-    amount: 1000,
-    frequency: 'weekly',
-    currentCycle: 8,
-    maxCycles: 10,
-    members: 10,
-    maxMembers: 10,
-    createdBy: 'Priya Silva',
-    trustScore: 4.5,
-    status: 'closed',
-    badges: ['Trusted'],
-  },
-  {
-    id: 3,
-    name: 'Community Building Fund',
-    description:
-      'Large community savings for major expenses. Auto-accept enabled.',
-    amount: 10000,
-    frequency: 'monthly',
-    currentCycle: 1,
-    maxCycles: 20,
-    members: 5,
-    maxMembers: 20,
-    createdBy: 'Ahmed Farook',
-    trustScore: 4.9,
-    status: 'open',
-    badges: ['Trusted', 'Auto-Accept'],
-  },
-  {
-    id: 4,
-    name: 'Family Savings Group',
-    description: 'Bi-weekly family contributions. Invite-only group.',
-    amount: 3000,
-    frequency: 'biweekly',
-    currentCycle: 2,
-    maxCycles: 8,
-    members: 6,
-    maxMembers: 8,
-    createdBy: 'Nimal Fernando',
-    trustScore: 5.0,
-    status: 'open',
-    badges: ['Invite-Only'],
-  },
-];
+import MegaMenu from '../components/MegaMenu.tsx';
+import { getAllGroups, joinUser } from '../services/group.service.ts';
+import Pagination from '../components/Pagination.tsx';
+import { useAuth } from '../context/authContext';
 
 interface ToastMessage {
   id: number;
@@ -97,7 +35,7 @@ const JoinGroup: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
-
+  const { user } = useAuth();
   // Filter states
   const [filters, setFilters] = useState({
     minAmount: 0,
@@ -107,13 +45,53 @@ const JoinGroup: React.FC = () => {
     status: 'all',
   });
 
-  const [pendingGroups, setPendingGroups] = useState<number[]>([]);
-  const [joinedGroups, setJoinedGroups] = useState<number[]>([]);
+  const [myGroups, setGroups] = useState<any[]>([]);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
     document.body.setAttribute('data-theme', theme);
     document.title = 'Join a Seettuwa Group';
   }, [theme]);
+
+  useEffect(() => {
+    fetchAllGroups();
+  }, []);
+
+  const fetchAllGroups = async (pageNumber = 1) => {
+    try {
+      const res = await getAllGroups(pageNumber, 4);
+      const groups = await res.data;
+
+      const mappedGroups = groups.map((g: any) => ({
+        id: g._id,
+        name: g.name,
+        description: g.description,
+        amount: g.amount,
+        frequency: g.frequency.toLowerCase(),
+        currentCycle: g.currentCycle,
+        maxCycles: g.maxCycles,
+        membersCount: g.members.length,
+        members: g.members.map((m: any) => String(m)),
+        totalMembers: g.totalMembers,
+        pendingRequests: g.pendingRequests.map((p: any) => ({
+          user: String(p.user),
+          requestedAt: p.requestedAt,
+        })),
+        createdUserName: g.createdUserName || 'Unknown',
+        createdBy: String(g.createdBy),
+        rating: parseFloat(g.rating || 0.0),
+        status: g.status.toLowerCase(),
+        badges: g.badges || [],
+      }));
+
+      setGroups(mappedGroups || []);
+      setTotalPage(res?.totalPages);
+      setPage(pageNumber);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
 
   const isDark = theme === 'dark';
 
@@ -127,18 +105,19 @@ const JoinGroup: React.FC = () => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
   };
 
-  const handleJoinGroup = (group: (typeof MOCK_GROUPS)[0]) => {
-    if (group.status === 'closed' || group.members >= group.maxMembers) {
+  const handleJoinGroup = async (group: any) => {
+    // prevent joining inactive or full groups
+    if (group.status === 'closed' || group.membersCount >= group.totalMembers) {
       addToast('error', 'This group is full or closed.');
       return;
     }
 
-    if (joinedGroups.includes(group.id)) {
+    if (group.members.includes(user.id)) {
       addToast('warning', `You're already a member of ${group.name}.`);
       return;
     }
 
-    if (pendingGroups.includes(group.id)) {
+    if (group.pendingRequests.some((req: any) => req.user === user.id)) {
       addToast(
         'info',
         `Your request to join ${group.name} is pending approval.`
@@ -146,23 +125,51 @@ const JoinGroup: React.FC = () => {
       return;
     }
 
-    // Check if auto-accept
-    const isAutoAccept = group.badges.includes('Auto-Accept');
+    try {
+      const res = await joinUser(group);
+      console.log(res);
 
-    if (isAutoAccept) {
-      setJoinedGroups((prev) => [...prev, group.id]);
-      addToast('success', `You've successfully joined ${group.name}!`);
-    } else {
-      setPendingGroups((prev) => [...prev, group.id]);
-      addToast(
-        'info',
-        `Your request to join ${group.name} is awaiting approval.`
-      );
+      if (res.joined) {
+        setGroups((prev) =>
+          prev.map((g) =>
+            g.id === group.id
+              ? {
+                  ...g,
+                  members: [...g.members, user.id],
+                  membersCount: g.membersCount + 1,
+                }
+              : g
+          )
+        );
+
+        addToast('success', `You've successfully joined ${group.name}!`);
+      } else if (res.pending) {
+        setGroups((prev) =>
+          prev.map((g) =>
+            g.id === group.id
+              ? {
+                  ...g,
+                  pendingRequests: [
+                    ...g.pendingRequests,
+                    { user: user.id, requestedAt: new Date().toISOString() },
+                  ],
+                }
+              : g
+          )
+        );
+
+        addToast(
+          'info',
+          `Your request to join ${group.name} is awaiting approval.`
+        );
+      }
+    } catch (err: any) {
+      const message = err?.response?.data?.message || 'Failed to join group.';
+      addToast('error', message);
     }
   };
 
-  // Filter groups based on search and filters
-  const filteredGroups = MOCK_GROUPS.filter((group) => {
+  const filteredGroups = myGroups.filter((group) => {
     const matchesSearch =
       group.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       group.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -175,11 +182,11 @@ const JoinGroup: React.FC = () => {
 
     const matchesSize =
       filters.groupSize === 'all' ||
-      (filters.groupSize === 'small' && group.maxMembers <= 10) ||
+      (filters.groupSize === 'small' && group.totalMembers <= 10) ||
       (filters.groupSize === 'medium' &&
-        group.maxMembers > 10 &&
-        group.maxMembers <= 20) ||
-      (filters.groupSize === 'large' && group.maxMembers > 20);
+        group.totalMembers > 10 &&
+        group.totalMembers <= 20) ||
+      (filters.groupSize === 'large' && group.totalMembers > 20);
 
     const matchesStatus =
       filters.status === 'all' || group.status === filters.status;
@@ -193,8 +200,16 @@ const JoinGroup: React.FC = () => {
     );
   });
 
-  const getButtonState = (group: (typeof MOCK_GROUPS)[0]) => {
-    if (joinedGroups.includes(group.id)) {
+  const getButtonState = (group: (typeof myGroups)[0]) => {
+    if (group.createdBy === user.id) {
+      return {
+        disabled: true,
+        text: 'You are the moderator',
+        icon: Crown,
+        variant: 'disabled',
+      };
+    }
+    if (group.members?.includes(user.id)) {
       return {
         disabled: true,
         text: 'Already Joined',
@@ -202,7 +217,7 @@ const JoinGroup: React.FC = () => {
         variant: 'success',
       };
     }
-    if (pendingGroups.includes(group.id)) {
+    if (group.pendingRequests.some((req: any) => req.user === user.id)) {
       return {
         disabled: true,
         text: 'Pending Approval',
@@ -210,7 +225,7 @@ const JoinGroup: React.FC = () => {
         variant: 'warning',
       };
     }
-    if (group.status === 'closed' || group.members >= group.maxMembers) {
+    if (group.status === 'closed' || group.membersCount >= group.totalMembers) {
       return {
         disabled: true,
         text: 'Group Full',
@@ -234,6 +249,8 @@ const JoinGroup: React.FC = () => {
       {isDark && <div className="noise-overlay" />}
 
       <Navbar />
+
+      <MegaMenu />
 
       {/* Toast Container */}
       <div className="fixed top-20 right-4 z-50 space-y-2">
@@ -459,7 +476,7 @@ const JoinGroup: React.FC = () => {
                       <p
                         className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
                       >
-                        Created by {group.createdBy}
+                        Created by {group.createdUserName}
                       </p>
                     </div>
 
@@ -475,14 +492,14 @@ const JoinGroup: React.FC = () => {
                       <span
                         className={`text-sm font-semibold ${isDark ? 'text-[#d4a574]' : 'text-[#b8894d]'}`}
                       >
-                        {group.trustScore}
+                        {group.rating}
                       </span>
                     </div>
                   </div>
 
                   {/* Badges */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {group.badges.map((badge) => (
+                  <div className="flex flex-wrap gap-2 mb-4 min-h-[28px]">
+                    {group.badges.map((badge: any) => (
                       <span
                         key={badge}
                         className={`px-3 py-1 rounded-full text-xs font-semibold ${
@@ -557,7 +574,7 @@ const JoinGroup: React.FC = () => {
                       <div>
                         <p className="text-xs text-gray-500">Members</p>
                         <p className="text-sm font-semibold">
-                          {group.members}/{group.maxMembers}
+                          {group.membersCount}/{group.totalMembers}
                         </p>
                       </div>
                     </div>
@@ -585,7 +602,7 @@ const JoinGroup: React.FC = () => {
                       <div
                         className={`h-full transition-all ${isDark ? 'bg-[#d4a574]' : 'bg-[#b8894d]'}`}
                         style={{
-                          width: `${(group.members / group.maxMembers) * 100}%`,
+                          width: `${(group.membersCount / group.totalMembers) * 100}%`,
                         }}
                       />
                     </div>
@@ -641,6 +658,13 @@ const JoinGroup: React.FC = () => {
           )}
         </div>
       </main>
+
+      <Pagination
+        currentPage={page}
+        totalPages={totalPage}
+        onPageChange={fetchAllGroups}
+        isDark={isDark}
+      />
 
       <Footer />
     </div>
