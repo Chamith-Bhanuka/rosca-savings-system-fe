@@ -3,6 +3,8 @@ import { lazy, type ReactNode, Suspense } from 'react';
 import Loader from '../components/Loader.tsx';
 import JoinGroup from '../pages/JoinGroup.tsx';
 import { useAuth } from '../context/authContext.tsx';
+import ModeratorGroups from '../pages/ModeratorGroups.tsx';
+import MyGroups from '../pages/MyGroups.tsx';
 
 // Lazy load pages
 const Home = lazy(() => import('../pages/Home'));
@@ -42,6 +44,10 @@ export default function Router() {
           />
 
           <Route path="/groups/join" element={<JoinGroup />} />
+
+          <Route path="/groups/" element={<ModeratorGroups />} />
+
+          <Route path="/groups/my" element={<MyGroups />} />
 
           <Route path="/" element={<div>Hello, from router..!</div>} />
         </Routes>
