@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store.ts';
+import { useNavigate } from 'react-router-dom';
 
 import { useSeettuAnimation } from '../hooks/useSeettuAnimation.ts';
 import { PARTICIPANTS } from '../data/constant.ts';
@@ -34,6 +35,8 @@ const Home: React.FC = () => {
   useEffect(() => {
     document.title = 'Seettuwa | Authentic Savings Circles';
   }, []);
+
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col min-h-screen font-['Inter'] relative">
@@ -84,6 +87,7 @@ const Home: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row gap-3.5 justify-center lg:justify-start">
             <button
+              onClick={() => navigate('/groups/join')}
               className={`px-7 py-3 rounded-md text-[15px] font-semibold text-white shadow-lg shadow-[#d4a574]/30 hover:translate-y-[-2px] hover:shadow-[#d4a574]/40 transition-all bg-gradient-to-br from-[#d4a574] to-[#a3784e]`}
             >
               {t('home.exploreGroups')}
