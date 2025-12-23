@@ -8,6 +8,7 @@ import { menuConfig } from '../config/menuConfig';
 import { useTranslation } from 'react-i18next';
 import { setLanguage } from '../slices/languageSlice';
 import type { MenuItem } from '../config/menuConfig';
+import { useNotifications } from '../context/NotificationProvider';
 
 const MegaMenu: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -17,11 +18,14 @@ const MegaMenu: React.FC = () => {
   const isDark = useSelector(
     (state: RootState) => state.theme.value === 'dark'
   );
-
   const { t, i18n } = useTranslation();
 
+  const { notifications } = useNotifications();
+
+  const unreadCount = notifications.filter((n: any) => !n.read).length;
+  // notifications.length
+
   const toggleLanguage = () => {
-    console.log('Toggle language clicked');
     const newLang = i18n.language === 'en' ? 'si' : 'en';
     i18n.changeLanguage(newLang);
     dispatch(setLanguage(newLang));
@@ -32,7 +36,6 @@ const MegaMenu: React.FC = () => {
       toggleLanguage();
       return;
     }
-
     navigate(item.route);
     dispatch(closeMenu());
   };
@@ -81,17 +84,26 @@ const MegaMenu: React.FC = () => {
                         : 'භාෂාව: සිංහල'
                       : t(item.label);
 
+                  const isNotificationLink = item.route === '/notifications';
+
                   return (
-                    <li key={label}>
+                    <li key={label} className="relative group">
                       <button
                         onClick={() => handleClick(item)}
-                        className={`text-left w-full text-lg font-light transition-all hover:translate-x-2 block ${
+                        className={`text-left w-full text-lg font-light transition-all hover:translate-x-2 flex items-center ${
                           isDark
                             ? 'text-[#f2f0ea] hover:text-[#d4a574]'
                             : 'text-[#1a1a1a] hover:text-[#b8894d]'
                         }`}
                       >
                         {label}
+
+                        {isNotificationLink && unreadCount > 0 && (
+                          <span className="ml-2 flex h-2.5 w-2.5 relative">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                          </span>
+                        )}
                       </button>
                     </li>
                   );
