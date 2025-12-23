@@ -7,6 +7,8 @@ import type { RootState } from './store/store.ts';
 import i18n from './i18n.ts';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/authContext.tsx';
+import { NotificationProvider } from './context/NotificationProvider.tsx';
+import NotificationBell from './components/NotificationBell.tsx';
 
 const App: React.FC = () => {
   const lang = useSelector((s: RootState) => s.language.value);
@@ -18,17 +20,19 @@ const App: React.FC = () => {
 
   return (
     <AuthProvider>
-      {/*<Toaster position="top-right" />*/}
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          style: {
-            background: theme === 'dark' ? '#1f1f1f' : '#ffffff',
-            color: theme === 'dark' ? '#f2f2f2' : '#1a1a1a',
-          },
-        }}
-      />
-      <Router />
+      <NotificationProvider>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            style: {
+              background: theme === 'dark' ? '#1f1f1f' : '#ffffff',
+              color: theme === 'dark' ? '#f2f2f2' : '#1a1a1a',
+            },
+          }}
+        />
+        <NotificationBell />
+        <Router />
+      </NotificationProvider>
     </AuthProvider>
   );
 };
