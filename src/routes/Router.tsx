@@ -56,7 +56,7 @@ export default function Router() {
 
           <Route path="/groups/manage/:groupId" element={<ManageGroup />} />
 
-          <Route path="/groups/myG/:groupId" element={<MyGroup />} />
+          <Route path="/groups/my/:groupId" element={<MyGroup />} />
 
           <Route path="/" element={<div>Hello, from router..!</div>} />
         </Routes>
