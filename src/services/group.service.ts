@@ -48,3 +48,8 @@ export const declineJoinRequest = async (groupId: string, userId: string) => {
   const res = await api.post(`/group/${groupId}/pending/${userId}/decline`);
   return res;
 };
+
+export const triggerGroupDraw = async (groupId: string) => {
+  const res = await api.post(`/group/${groupId}/draw`);
+  return res;
+};
