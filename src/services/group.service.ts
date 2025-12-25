@@ -31,3 +31,20 @@ export const joinUser = async (group: any) => {
   const res = await api.post(`/group/${group.id}/join`);
   return res.data;
 };
+
+export const getGroupById = async (groupId: string) => {
+  console.log('GroupID from service: ', groupId);
+  const res = await api.get(`/group/${groupId}`);
+  console.log(res.data);
+  return res;
+};
+
+export const acceptJoinRequest = async (groupId: string, userId: string) => {
+  const res = await api.post(`/group/${groupId}/pending/${userId}/accept`);
+  return res;
+};
+
+export const declineJoinRequest = async (groupId: string, userId: string) => {
+  const res = await api.post(`/group/${groupId}/pending/${userId}/decline`);
+  return res;
+};
