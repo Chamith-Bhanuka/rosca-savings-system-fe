@@ -5,6 +5,7 @@ import JoinGroup from '../pages/JoinGroup.tsx';
 import { useAuth } from '../context/authContext.tsx';
 import ModeratorGroups from '../pages/ModeratorGroups.tsx';
 import MyGroups from '../pages/MyGroups.tsx';
+import MyGroup from '../pages/MyGroup.tsx';
 import Notifications from '../pages/Notifications.tsx';
 import ManageGroup from '../pages/ManageGroup.tsx';
 
@@ -54,6 +55,8 @@ export default function Router() {
           <Route path="/notifications" element={<Notifications />} />
 
           <Route path="/groups/manage/:groupId" element={<ManageGroup />} />
+
+          <Route path="/groups/myG/:groupId" element={<MyGroup />} />
 
           <Route path="/" element={<div>Hello, from router..!</div>} />
         </Routes>
