@@ -5,6 +5,8 @@ import JoinGroup from '../pages/JoinGroup.tsx';
 import { useAuth } from '../context/authContext.tsx';
 import ModeratorGroups from '../pages/ModeratorGroups.tsx';
 import MyGroups from '../pages/MyGroups.tsx';
+import Notifications from '../pages/Notifications.tsx';
+import ManageGroup from '../pages/ManageGroup.tsx';
 
 // Lazy load pages
 const Home = lazy(() => import('../pages/Home'));
@@ -48,6 +50,10 @@ export default function Router() {
           <Route path="/groups/" element={<ModeratorGroups />} />
 
           <Route path="/groups/my" element={<MyGroups />} />
+
+          <Route path="/notifications" element={<Notifications />} />
+
+          <Route path="/groups/manage/:groupId" element={<ManageGroup />} />
 
           <Route path="/" element={<div>Hello, from router..!</div>} />
         </Routes>
