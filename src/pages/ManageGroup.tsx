@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store.ts';
 import Navbar from '../components/NavBar';
@@ -12,6 +12,8 @@ import {
 } from '../services/group.service';
 import { useAuth } from '../context/authContext.tsx'; // Assuming you have this from your summary
 import toast from 'react-hot-toast'; // Optional: for success/error messages
+import { triggerGroupDraw } from '../services/group.service';
+import { calculatePayoutDate } from '../utils/dateUtils';
 
 // Types based on your backend response
 interface User {
@@ -36,11 +38,15 @@ interface GroupData {
   pendingRequests: Request[];
   members: User[];
   totalMembers: number;
+  startDate: any;
+  payoutOrder: any;
+  frequency: any;
+  amount: any;
 }
 
 const ManageGroup: React.FC = () => {
   const { groupId } = useParams<{ groupId: string }>();
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const { user } = useAuth(); // Logged in user info
   const theme = useSelector((state: RootState) => state.theme.value);
 
@@ -93,6 +99,19 @@ const ManageGroup: React.FC = () => {
       </div>
     );
   }
+
+  const handleDraw = async () => {
+    if (!confirm('Are you sure? This will permanently set the payout order.'))
+      return;
+    try {
+      if (!group) return; // Add check
+      await triggerGroupDraw(group._id);
+      toast.success('Draw completed! Schedule generated.');
+      fetchGroup(); // Refresh data to show the new list
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Draw failed');
+    }
+  };
 
   return (
     <div
@@ -212,6 +231,108 @@ const ManageGroup: React.FC = () => {
             </section>
           </div>
         )}
+
+        {/* PAYOUT SCHEDULE SECTION */}
+        <section className="mt-12">
+          <div className="flex items-center justify-between mb-6">
+            <h2
+              className={`text-xl font-semibold ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}
+            >
+              Payout Schedule
+            </h2>
+
+            {/* SHOW BUTTON ONLY IF: Group Full + Start Date Reached + No Order Yet */}
+            {group &&
+              group.members.length === group.totalMembers &&
+              new Date() >= new Date(group.startDate) &&
+              group.payoutOrder.length === 0 && (
+                <button
+                  onClick={handleDraw}
+                  className="px-6 py-2 rounded-md font-bold text-black bg-[#d4a574] hover:bg-[#b8894d] transition-all shadow-lg animate-pulse"
+                >
+                  🎲 Start Lucky Draw
+                </button>
+              )}
+          </div>
+
+          {/* TABLE DISPLAY */}
+          {group && group.payoutOrder.length > 0 ? (
+            <div
+              className={`overflow-hidden rounded-lg border ${theme === 'dark' ? 'border-[#d4a574]/20 bg-white/5' : 'border-gray-200 bg-white'}`}
+            >
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr
+                    className={`border-b ${theme === 'dark' ? 'border-white/10 text-gray-400' : 'border-gray-200 text-gray-600'}`}
+                  >
+                    <th className="p-4 font-medium">Cycle</th>
+                    <th className="p-4 font-medium">Payout Date</th>
+                    <th className="p-4 font-medium">Recipient (Winner)</th>
+                    <th className="p-4 font-medium text-right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {group.payoutOrder.map((member: any, index: number) => (
+                    <tr
+                      key={index}
+                      className={`border-b last:border-0 hover:bg-white/5 transition-colors 
+                ${member._id === user?.id ? (theme === 'dark' ? 'bg-[#d4a574]/10' : 'bg-[#d4a574]/10') : ''}`}
+                    >
+                      <td className="p-4 font-mono text-[#d4a574]">
+                        #{index + 1}
+                      </td>
+                      <td
+                        className={`p-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}
+                      >
+                        {calculatePayoutDate(
+                          group.startDate,
+                          index,
+                          group.frequency
+                        )}
+                      </td>
+                      <td className="p-4 flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-gray-600 overflow-hidden">
+                          {/* Safety check for avatar */}
+                          {member.avatarUrl ? (
+                            <img
+                              src={member.avatarUrl}
+                              alt="av"
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-xs text-white">
+                              {member.firstName?.[0]}
+                            </div>
+                          )}
+                        </div>
+                        <span
+                          className={
+                            theme === 'dark' ? 'text-white' : 'text-gray-900'
+                          }
+                        >
+                          {member.firstName} {member.lastName}
+                          {/* Identify Moderator */}
+                          {member._id === group.createdBy._id && (
+                            <span className="ml-2 text-[10px] border border-[#d4a574] text-[#d4a574] px-1 rounded">
+                              MOD
+                            </span>
+                          )}
+                        </span>
+                      </td>
+                      <td className="p-4 text-right font-bold text-[#d4a574]">
+                        Rs. {group.amount.toLocaleString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="p-6 text-center border border-dashed border-gray-600 rounded-lg text-gray-500">
+              Draw has not started yet. Waiting for group to fill or start date.
+            </div>
+          )}
+        </section>
       </main>
 
       <Footer />
