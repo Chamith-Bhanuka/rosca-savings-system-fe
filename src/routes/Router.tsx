@@ -8,6 +8,7 @@ import MyGroups from '../pages/MyGroups.tsx';
 import MyGroup from '../pages/MyGroup.tsx';
 import Notifications from '../pages/Notifications.tsx';
 import ManageGroup from '../pages/ManageGroup.tsx';
+import Wallet from '../pages/Wallet.tsx';
 
 // Lazy load pages
 const Home = lazy(() => import('../pages/Home'));
@@ -57,6 +58,8 @@ export default function Router() {
           <Route path="/groups/manage/:groupId" element={<ManageGroup />} />
 
           <Route path="/groups/my/:groupId" element={<MyGroup />} />
+
+          <Route path="/wallet" element={<Wallet />} />
 
           <Route path="/" element={<div>Hello, from router..!</div>} />
         </Routes>
