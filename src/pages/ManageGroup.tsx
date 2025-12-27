@@ -167,7 +167,7 @@ const ManageGroup: React.FC = () => {
                   {group.pendingRequests.map((req) => (
                     <div
                       key={req.user._id}
-                      className={`p-5 rounded-lg border transition-all flex flex-col sm:flex-row items-center justify-between gap-4 
+                      className={`p-5 rounded-lg border transition-all flex flex-col sm:flex-row items-center justify-between gap-4
                         ${
                           theme === 'dark'
                             ? 'bg-[#1a1a1a] border-[#d4a574]/20 hover:border-[#d4a574]/50'
@@ -275,7 +275,7 @@ const ManageGroup: React.FC = () => {
                   {group.payoutOrder.map((member: any, index: number) => (
                     <tr
                       key={index}
-                      className={`border-b last:border-0 hover:bg-white/5 transition-colors 
+                      className={`border-b last:border-0 hover:bg-white/5 transition-colors
                 ${member._id === user?.id ? (theme === 'dark' ? 'bg-[#d4a574]/10' : 'bg-[#d4a574]/10') : ''}`}
                     >
                       <td className="p-4 font-mono text-[#d4a574]">
