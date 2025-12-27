@@ -53,3 +53,16 @@ export const triggerGroupDraw = async (groupId: string) => {
   const res = await api.post(`/group/${groupId}/draw`);
   return res;
 };
+
+export const getGroupContributions = async (groupId: string, cycle: number) => {
+  const res = await api.get(`/payment/${groupId}/contributions?cycle=${cycle}`);
+  return res;
+};
+
+export const verifyContribution = async (
+  contributionId: string,
+  action: 'APPROVE' | 'REJECT',
+  reason?: string
+) => {
+  console.log(contributionId, reason, action);
+};
