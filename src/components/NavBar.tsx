@@ -47,15 +47,15 @@ const Navbar: React.FC = () => {
 
       <div className="flex items-center gap-6">
         <div className="hidden md:flex gap-6">
-          <a
-            href="#"
+          <Link
+            to={'/dashboard'}
             className={`flex items-center text-sm font-medium relative group px-2 py-2 ${isDark ? 'text-gray-400 hover:text-[#d4a574]' : 'text-gray-500 hover:text-[#b8894d]'}`}
           >
             {t('navbar.dashboard')}
             <span
               className={`absolute -bottom-[2px] left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full ${isDark ? 'bg-[#d4a574]' : 'bg-[#b8894d]'}`}
             ></span>
-          </a>
+          </Link>
           {user ? (
             <button
               onClick={handleLogout}
