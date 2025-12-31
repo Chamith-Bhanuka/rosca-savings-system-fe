@@ -8,6 +8,7 @@ import i18n from './i18n.ts';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/authContext.tsx';
 import { NotificationProvider } from './context/NotificationProvider.tsx';
+import AIAgent from './components/AIAgent.tsx';
 
 const App: React.FC = () => {
   const lang = useSelector((s: RootState) => s.language.value);
@@ -31,6 +32,7 @@ const App: React.FC = () => {
         />
         <Router />
       </NotificationProvider>
+      <AIAgent />
     </AuthProvider>
   );
 };
