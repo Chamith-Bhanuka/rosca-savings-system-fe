@@ -107,8 +107,7 @@ const Dashboard: React.FC = () => {
                 <div className="relative">
                   <img
                     src={
-                      data?.user?.profileImage ||
-                      'https://via.placeholder.com/150'
+                      data?.user?.avatarUrl || 'https://via.placeholder.com/150'
                     }
                     className={`w-16 h-16 rounded-full object-cover border-2 ${
                       isDark ? 'border-[#d4a574]' : 'border-[#b8894d]'
