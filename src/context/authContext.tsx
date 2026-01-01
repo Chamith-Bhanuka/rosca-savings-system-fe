@@ -10,6 +10,8 @@ type AuthUser = {
   role: string;
   id: string;
   token: string;
+  avatarUrl: string;
+  phone: string;
 };
 
 const AuthContext = createContext<any>(null);
@@ -36,6 +38,8 @@ export const AuthProvider = ({ children }: any) => {
           role: userData.role,
           id: userData._id,
           token,
+          avatarUrl: userData.avatarUrl,
+          phone: userData.phone,
         });
       })
       .catch(() => {
