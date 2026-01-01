@@ -51,7 +51,7 @@ const Settings: React.FC = () => {
         bankAccount: user.bankDetails?.accountNumber || '',
         bankName: user.bankDetails?.bankName || '',
       });
-      setPreviewImage(user.profileImage || null);
+      setPreviewImage(user.avatarUrl || null);
     }
   }, [user]);
 
