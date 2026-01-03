@@ -11,6 +11,9 @@ import ManageGroup from '../pages/ManageGroup.tsx';
 import Wallet from '../pages/Wallet.tsx';
 import Settings from '../pages/Settings.tsx';
 import Dashboard from '../pages/Dashboard.tsx';
+import Leaderboard from '../pages/Leaderboard.tsx';
+import Analytics from '../pages/Analytics.tsx';
+import TrustProfile from '../pages/TrustProfile.tsx';
 
 // Lazy load pages
 const Home = lazy(() => import('../pages/Home'));
@@ -66,6 +69,12 @@ export default function Router() {
           <Route path="/settings" element={<Settings />} />
 
           <Route path="/dashboard" element={<Dashboard />} />
+
+          <Route path="/leaderboard" element={<Leaderboard />} />
+
+          <Route path="/analytics" element={<Analytics />} />
+
+          <Route path="/trust" element={<TrustProfile />} />
 
           <Route path="/" element={<div>Hello, from router..!</div>} />
         </Routes>
