@@ -15,6 +15,8 @@ import Leaderboard from '../pages/Leaderboard.tsx';
 import Analytics from '../pages/Analytics.tsx';
 import TrustProfile from '../pages/TrustProfile.tsx';
 import Disputes from '../pages/Disputes.tsx';
+import AdminPanel from '../pages/AdminPanel.tsx';
+import Support from '../pages/Support.tsx';
 
 // Lazy load pages
 const Home = lazy(() => import('../pages/Home'));
@@ -78,6 +80,10 @@ export default function Router() {
           <Route path="/trust" element={<TrustProfile />} />
 
           <Route path="/disputes" element={<Disputes />} />
+
+          <Route path="/admin" element={<AdminPanel />} />
+
+          <Route path="/help" element={<Support />} />
 
           <Route path="/" element={<div>Hello, from router..!</div>} />
         </Routes>
