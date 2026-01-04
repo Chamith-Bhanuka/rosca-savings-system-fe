@@ -18,8 +18,6 @@ import { calculatePayoutDate } from '../utils/dateUtils';
 import { useAuth } from '../context/authContext.tsx';
 import { releasePayout } from '../services/payment.service.ts';
 
-// ... existing interfaces ...
-// Types based on your backend response
 interface User {
   _id: string;
   firstName: string;
