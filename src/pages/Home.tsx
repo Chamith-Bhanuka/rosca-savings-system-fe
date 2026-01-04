@@ -93,6 +93,7 @@ const Home: React.FC = () => {
               {t('home.exploreGroups')}
             </button>
             <button
+              onClick={() => navigate('/howItWorks')}
               className={`px-7 py-3 rounded-md text-[15px] font-medium border-2 transition-all hover:bg-[#d4a574]/10 ${theme === 'dark' ? 'border-white/10 text-[#f2f0ea] hover:border-[#d4a574]' : 'border-black/10 text-[#1a1a1a] hover:border-[#b8894d]'}`}
             >
               {t('home.howItWorks')}
