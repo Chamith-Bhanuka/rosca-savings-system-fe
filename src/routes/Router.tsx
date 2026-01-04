@@ -19,6 +19,7 @@ import AdminPanel from '../pages/AdminPanel.tsx';
 import Support from '../pages/Support.tsx';
 import AdminNewsletter from '../components/AdminNewsletter.tsx';
 import HowItWorks from '../pages/HowItWorks.tsx';
+import StaticPage from '../pages/static/StaticPage.tsx';
 
 // Lazy load pages
 const Home = lazy(() => import('../pages/Home'));
@@ -90,6 +91,95 @@ export default function Router() {
           <Route path="/admin/newsletter" element={<AdminNewsletter />} />
 
           <Route path="/howItWorks" element={<HowItWorks />} />
+
+          <Route
+            path="/about"
+            element={
+              <StaticPage title="About Us">
+                <p>
+                  Seettuwa is a fintech startup dedicated to digitizing the
+                  ROSCA model...
+                </p>
+                <h3>Our Mission</h3>
+                <p>
+                  To provide accessible, community-driven finance to everyone.
+                </p>
+              </StaticPage>
+            }
+          />
+
+          <Route
+            path="/security"
+            element={
+              <StaticPage title="Security">
+                <p>
+                  Your security is our priority. We use Stripe for payments and
+                  256-bit encryption...
+                </p>
+                <ul>
+                  <li>Payments are held in escrow.</li>
+                  <li>Identity verification.</li>
+                </ul>
+              </StaticPage>
+            }
+          />
+
+          <Route
+            path="/fees"
+            element={
+              <StaticPage title="Platform Fees">
+                <p>
+                  We charge a flat <b>1% service fee</b> on the Pot amount to
+                  cover server costs and payment gateway charges.
+                </p>
+              </StaticPage>
+            }
+          />
+
+          <Route
+            path="/terms"
+            element={
+              <StaticPage title="Terms of Use" lastUpdated="Jan 01, 2026">
+                <p>By using Seettuwa, you agree to the following terms...</p>
+              </StaticPage>
+            }
+          />
+
+          <Route
+            path="/privacy"
+            element={
+              <StaticPage title="Privacy Policy" lastUpdated="Jan 01, 2026">
+                <p>
+                  We do not sell your data. Here is how we use your
+                  information...
+                </p>
+              </StaticPage>
+            }
+          />
+
+          <Route
+            path="/cookies"
+            element={
+              <StaticPage title="Cookie Policy" lastUpdated="Jan 01, 2026">
+                <p>
+                  We do not sell your data. Here is how we use your
+                  information...
+                </p>
+              </StaticPage>
+            }
+          />
+
+          <Route
+            path="/compliance"
+            element={
+              <StaticPage title="Compliance">
+                <p>
+                  Seettuwa complies with local financial regulations regarding
+                  Chit Funds...
+                </p>
+              </StaticPage>
+            }
+          />
 
           <Route path="/" element={<div>Hello, from router..!</div>} />
         </Routes>
