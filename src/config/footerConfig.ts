@@ -3,7 +3,7 @@ export const footerConfig: FooterMenuColumn[] = [
     title: 'footer.platform',
     items: [
       { label: 'footer.items.aboutUs', route: '/about' },
-      { label: 'footer.items.howItWorks', route: '/how' },
+      { label: 'footer.items.howItWorks', route: '/howItWorks' },
       { label: 'footer.items.security', route: '/security' },
       { label: 'footer.items.fees', route: '/fees' },
     ],
