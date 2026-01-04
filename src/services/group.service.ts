@@ -21,8 +21,14 @@ export const createGroup = async (
   return res.data;
 };
 
-export const getAllGroups = async (page: number, limit: number) => {
-  const res = await api.get(`/group?page=${page}&limit=${limit}`);
+export const getAllGroups = async (
+  page: number,
+  limit: number,
+  mine?: boolean
+) => {
+  const res = await api.get(
+    `/group?page=${page}&limit=${limit}${mine ? '&mine=true' : ''}`
+  );
   return res.data;
 };
 
