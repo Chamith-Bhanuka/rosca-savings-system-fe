@@ -85,7 +85,7 @@ const Disputes: React.FC = () => {
       formData.append('groupId', groupId);
       formData.append('subject', subject);
       formData.append('description', description);
-      if (file) formData.append('evidence', file);
+      if (file) formData.append('image', file);
 
       await axios.post('http://localhost:5000/api/v1/dispute', formData, {
         headers: {
@@ -103,6 +103,7 @@ const Disputes: React.FC = () => {
       setFile(null);
     } catch (err) {
       alert('Failed to raise dispute');
+      console.error(err);
     }
   };
 
