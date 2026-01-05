@@ -21,6 +21,9 @@ export const confirmStripePayment = async (
   return res.data;
 };
 
-export const releasePayout = async (groupId: string, cycle: number) => {
+export const releasePayout = async (
+  groupId: string,
+  cycle: number | undefined
+) => {
   await api.post(`/payment/payout/release`, { groupId, cycle });
 };
