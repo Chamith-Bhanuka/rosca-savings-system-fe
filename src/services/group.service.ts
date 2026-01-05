@@ -24,10 +24,10 @@ export const createGroup = async (
 export const getAllGroups = async (
   page: number,
   limit: number,
-  mine?: boolean
+  filter: 'all' | 'created' | 'joined' = 'all'
 ) => {
   const res = await api.get(
-    `/group?page=${page}&limit=${limit}${mine ? '&mine=true' : ''}`
+    `/group?page=${page}&limit=${limit}&filter=${filter}`
   );
   return res.data;
 };
