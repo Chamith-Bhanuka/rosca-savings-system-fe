@@ -62,7 +62,7 @@ export default function Router() {
 
           <Route path="/groups/" element={<ModeratorGroups />} />
 
-          <Route path="/groups/my" element={<MyGroups />} />
+          <Route path="/contributions" element={<MyGroups />} />
 
           <Route path="/notifications" element={<Notifications />} />
 
