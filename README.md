@@ -120,7 +120,6 @@ npm run dev
 ---
 
 ## 📜 Available Scripts
-  .npm run lintRuns ESLint to check code quality.
 
 | **Command** | **Description** |
 |:---:|:---:|
@@ -140,6 +139,6 @@ LinkedIn: [linkedin.com/in/chamith-bhanuka](https://linkedin.com/in/chamith-bhan
 
 ---
 
-© 2026 Seettuwa Platform. All Rights Reserved.
+<p align="center"> © 2026 Seettuwa Platform. All Rights Reserved. </p>
 
 
