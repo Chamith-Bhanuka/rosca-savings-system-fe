@@ -21,7 +21,6 @@ import Navbar from '../components/NavBar.tsx';
 import MegaMenu from '../components/MegaMenu';
 import Footer from '../components/Footer.tsx';
 import { getAllGroups } from '../services/group.service.ts';
-import { useAuth } from '../context/authContext.tsx';
 import Pagination from '../components/Pagination.tsx';
 
 interface Member {
@@ -51,7 +50,6 @@ interface ModeratorGroup {
 const ModeratorGroups: React.FC = () => {
   const theme = useSelector((state: RootState) => state.theme.value);
   const navigate = useNavigate();
-  const { user } = useAuth();
   const isDark = theme === 'dark';
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -69,36 +67,34 @@ const ModeratorGroups: React.FC = () => {
 
   const fetchAllGroups = async (pageNumber = 1) => {
     try {
-      const res = await getAllGroups(pageNumber, 6, true);
+      const res = await getAllGroups(pageNumber, 6, 'created');
       const groups = await res.data;
 
-      const mappedGroups = groups
-        .filter((g: any) => String(g.createdBy) === String(user.id))
-        .map((g: any) => ({
-          id: g._id,
-          name: g.name,
-          description: g.description,
-          amount: g.amount,
-          frequency: g.frequency.toLowerCase(),
-          currentCycle: g.currentCycle,
-          maxCycles: g.maxCycles,
-          membersCount: g.members.length,
-          members: g.members.map((m: any, idx: number) => ({
-            ...m,
-            id: m._id || m.id || `member-${idx}`,
-          })),
-          totalMembers: g.totalMembers,
-          pendingRequests: g.pendingRequests.map((p: any) => ({
-            user: String(p.user),
-            requestedAt: p.requestedAt,
-          })),
-          createdUserName: g.createdUserName || 'Unknown',
-          createdBy: String(g.createdBy),
-          rating: parseFloat(g.rating || 0.0),
-          status: g.status.toLowerCase(),
-          badges: g.badges || [],
-          disputeCount: g.disputeCount || 0,
-        }));
+      const mappedGroups = groups.map((g: any) => ({
+        id: g._id,
+        name: g.name,
+        description: g.description,
+        amount: g.amount,
+        frequency: g.frequency.toLowerCase(),
+        currentCycle: g.currentCycle,
+        maxCycles: g.maxCycles,
+        membersCount: g.members.length,
+        members: g.members.map((m: any, idx: number) => ({
+          ...m,
+          id: m._id || m.id || `member-${idx}`,
+        })),
+        totalMembers: g.totalMembers,
+        pendingRequests: g.pendingRequests.map((p: any) => ({
+          user: String(p.user),
+          requestedAt: p.requestedAt,
+        })),
+        createdUserName: g.createdUserName || 'Unknown',
+        createdBy: String(g.createdBy),
+        rating: parseFloat(g.rating || 0.0),
+        status: g.status.toLowerCase(),
+        badges: g.badges || [],
+        disputeCount: g.disputeCount || 0,
+      }));
 
       setGroups(mappedGroups || []);
       setTotalPage(res?.totalPages || 1);
