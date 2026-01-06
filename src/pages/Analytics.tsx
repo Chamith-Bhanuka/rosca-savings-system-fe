@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
-import Navbar from '../components/NavBar';
-import MegaMenu from '../components/MegaMenu';
-import Footer from '../components/Footer';
 import { useAuth } from '../context/authContext.tsx';
 import Loader from '../components/Loader';
 import {
@@ -46,9 +43,8 @@ const Analytics: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    document.body.setAttribute('data-theme', theme);
     document.title = 'Analytics - Seettuwa';
-  }, [theme]);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -123,29 +119,21 @@ const Analytics: React.FC = () => {
 
   if (!data || !data.chartData) {
     return (
-      <div
-        className={`flex flex-col min-h-screen font-['Inter'] relative ${isDark ? 'bg-[#0f0806]' : 'bg-[#faf8f5]'}`}
-      >
-        {isDark && <div className="noise-overlay" />}
-        <Navbar />
-        <MegaMenu />
-        <main className="flex-1 flex items-center justify-center">
-          <div
-            className={`text-center p-8 rounded-2xl ${
-              isDark
-                ? 'bg-[#1a110d]/80 backdrop-blur-xl border border-white/10'
-                : 'bg-white border border-gray-200'
-            }`}
-          >
-            <TrendingUp
-              className={`w-16 h-16 mx-auto mb-4 ${isDark ? 'text-gray-600' : 'text-gray-400'}`}
-            />
-            <p className={isDark ? 'text-gray-300' : 'text-gray-700'}>
-              No analytics data available yet.
-            </p>
-          </div>
-        </main>
-        <Footer />
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div
+          className={`text-center p-8 rounded-2xl ${
+            isDark
+              ? 'bg-[#1a110d]/80 backdrop-blur-xl border border-white/10'
+              : 'bg-white border border-gray-200'
+          }`}
+        >
+          <TrendingUp
+            className={`w-16 h-16 mx-auto mb-4 ${isDark ? 'text-gray-600' : 'text-gray-400'}`}
+          />
+          <p className={isDark ? 'text-gray-300' : 'text-gray-700'}>
+            No analytics data available yet.
+          </p>
+        </div>
       </div>
     );
   }
@@ -253,173 +241,160 @@ const Analytics: React.FC = () => {
   };
 
   return (
-    <div
-      className={`flex flex-col min-h-screen font-['Inter'] relative ${isDark ? 'bg-[#0f0806]' : 'bg-[#faf8f5]'}`}
-    >
-      {isDark && <div className="noise-overlay" />}
-
-      <Navbar />
-      <MegaMenu />
-
-      <main className="flex-1 px-4 sm:px-6 lg:px-8 pt-[88px] pb-12 relative z-10">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-            <div>
-              <h1
-                className={`text-3xl sm:text-4xl font-['Playfair_Display'] font-bold mb-2 ${
-                  isDark ? 'text-[#d4a574]' : 'text-[#b8894d]'
-                }`}
-              >
-                Financial Analytics
-              </h1>
-              <p
-                className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
-              >
-                Track your ROSCA performance over time
-              </p>
-            </div>
-
-            <button
-              onClick={downloadReport}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105 ${
-                isDark
-                  ? 'bg-gradient-to-r from-[#d4a574] to-[#a3784e] text-white hover:shadow-lg'
-                  : 'bg-gradient-to-r from-[#b8894d] to-[#8b6635] text-white hover:shadow-lg'
-              }`}
-            >
-              <Download className="w-5 h-5" />
-              Download Report
-            </button>
-          </div>
-
-          {/* Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            {/* Total Saved */}
-            <div
-              className={`rounded-2xl p-6 shadow-lg ${
-                isDark
-                  ? 'bg-[#1a110d]/80 backdrop-blur-xl border border-white/10'
-                  : 'bg-white border border-gray-200'
-              }`}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center">
-                  <TrendingDown className="w-6 h-6 text-red-500" />
-                </div>
-              </div>
-              <p
-                className={`text-xs font-medium mb-2 uppercase tracking-wider ${
-                  isDark ? 'text-gray-400' : 'text-gray-600'
-                }`}
-              >
-                Total Contributions
-              </p>
-              <h2
-                className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}
-              >
-                {data.summary.totalSaved.toLocaleString()}
-              </h2>
-              <p
-                className={`text-xs mt-2 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}
-              >
-                LKR
-              </p>
-            </div>
-
-            {/* Total Winnings */}
-            <div
-              className={`rounded-2xl p-6 shadow-lg ${
-                isDark
-                  ? 'bg-[#1a110d]/80 backdrop-blur-xl border border-white/10'
-                  : 'bg-white border border-gray-200'
-              }`}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
-                  <Award className="w-6 h-6 text-green-500" />
-                </div>
-              </div>
-              <p
-                className={`text-xs font-medium mb-2 uppercase tracking-wider ${
-                  isDark ? 'text-gray-400' : 'text-gray-600'
-                }`}
-              >
-                Total Winnings
-              </p>
-              <h2 className={`text-3xl font-bold text-green-500`}>
-                {data.summary.totalReceived.toLocaleString()}
-              </h2>
-              <p
-                className={`text-xs mt-2 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}
-              >
-                LKR
-              </p>
-            </div>
-
-            {/* Net Benefit */}
-            <div
-              className={`rounded-2xl p-6 shadow-lg ${
-                isDark
-                  ? 'bg-gradient-to-br from-[#1a110d] to-[#2a1a0d] border border-[#d4a574]/30'
-                  : 'bg-gradient-to-br from-[#b8894d] to-[#8b6635] border border-[#8b6635]'
-              }`}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div
-                  className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                    isDark ? 'bg-[#d4a574]/20' : 'bg-white/20'
-                  }`}
-                >
-                  <PiggyBank
-                    className={`w-6 h-6 ${isDark ? 'text-[#d4a574]' : 'text-white'}`}
-                  />
-                </div>
-              </div>
-              <p
-                className={`text-xs font-medium mb-2 uppercase tracking-wider ${
-                  isDark ? 'text-gray-400' : 'text-white/80'
-                }`}
-              >
-                Net Benefit
-              </p>
-              <h2
-                className={`text-3xl font-bold ${
-                  isDark ? 'text-[#d4a574]' : 'text-white'
-                }`}
-              >
-                {data.summary.netPosition.toLocaleString()}
-              </h2>
-              <p
-                className={`text-xs mt-2 ${isDark ? 'text-gray-500' : 'text-white/60'}`}
-              >
-                LKR
-              </p>
-            </div>
-          </div>
-
-          {/* Chart Section */}
-          <div
-            className={`rounded-2xl p-6 sm:p-8 shadow-lg ${
-              isDark
-                ? 'bg-[#1a110d]/80 backdrop-blur-xl border border-white/10'
-                : 'bg-white border border-gray-200'
+    <div className="max-w-7xl mx-auto">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div>
+          <h1
+            className={`text-3xl sm:text-4xl font-['Playfair_Display'] font-bold mb-2 ${
+              isDark ? 'text-[#d4a574]' : 'text-[#b8894d]'
             }`}
           >
-            <h3
-              className={`text-xl font-bold mb-6 ${isDark ? 'text-[#f2f0ea]' : 'text-gray-900'}`}
-            >
-              Savings vs. Winnings Overview
-            </h3>
+            Financial Analytics
+          </h1>
+          <p
+            className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
+          >
+            Track your ROSCA performance over time
+          </p>
+        </div>
 
-            <div style={{ width: '100%', height: 400 }}>
-              <Line data={chartData} options={chartOptions} />
+        <button
+          onClick={downloadReport}
+          className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105 ${
+            isDark
+              ? 'bg-gradient-to-r from-[#d4a574] to-[#a3784e] text-white hover:shadow-lg'
+              : 'bg-gradient-to-r from-[#b8894d] to-[#8b6635] text-white hover:shadow-lg'
+          }`}
+        >
+          <Download className="w-5 h-5" />
+          Download Report
+        </button>
+      </div>
+
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {/* Total Saved */}
+        <div
+          className={`rounded-2xl p-6 shadow-lg ${
+            isDark
+              ? 'bg-[#1a110d]/80 backdrop-blur-xl border border-white/10'
+              : 'bg-white border border-gray-200'
+          }`}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center">
+              <TrendingDown className="w-6 h-6 text-red-500" />
             </div>
           </div>
+          <p
+            className={`text-xs font-medium mb-2 uppercase tracking-wider ${
+              isDark ? 'text-gray-400' : 'text-gray-600'
+            }`}
+          >
+            Total Contributions
+          </p>
+          <h2
+            className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}
+          >
+            {data.summary.totalSaved.toLocaleString()}
+          </h2>
+          <p
+            className={`text-xs mt-2 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}
+          >
+            LKR
+          </p>
         </div>
-      </main>
 
-      <Footer />
+        {/* Total Winnings */}
+        <div
+          className={`rounded-2xl p-6 shadow-lg ${
+            isDark
+              ? 'bg-[#1a110d]/80 backdrop-blur-xl border border-white/10'
+              : 'bg-white border border-gray-200'
+          }`}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
+              <Award className="w-6 h-6 text-green-500" />
+            </div>
+          </div>
+          <p
+            className={`text-xs font-medium mb-2 uppercase tracking-wider ${
+              isDark ? 'text-gray-400' : 'text-gray-600'
+            }`}
+          >
+            Total Winnings
+          </p>
+          <h2 className={`text-3xl font-bold text-green-500`}>
+            {data.summary.totalReceived.toLocaleString()}
+          </h2>
+          <p
+            className={`text-xs mt-2 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}
+          >
+            LKR
+          </p>
+        </div>
+
+        {/* Net Benefit */}
+        <div
+          className={`rounded-2xl p-6 shadow-lg ${
+            isDark
+              ? 'bg-gradient-to-br from-[#1a110d] to-[#2a1a0d] border border-[#d4a574]/30'
+              : 'bg-gradient-to-br from-[#b8894d] to-[#8b6635] border border-[#8b6635]'
+          }`}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div
+              className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                isDark ? 'bg-[#d4a574]/20' : 'bg-white/20'
+              }`}
+            >
+              <PiggyBank
+                className={`w-6 h-6 ${isDark ? 'text-[#d4a574]' : 'text-white'}`}
+              />
+            </div>
+          </div>
+          <p
+            className={`text-xs font-medium mb-2 uppercase tracking-wider ${
+              isDark ? 'text-gray-400' : 'text-white/80'
+            }`}
+          >
+            Net Benefit
+          </p>
+          <h2
+            className={`text-3xl font-bold ${
+              isDark ? 'text-[#d4a574]' : 'text-white'
+            }`}
+          >
+            {data.summary.netPosition.toLocaleString()}
+          </h2>
+          <p
+            className={`text-xs mt-2 ${isDark ? 'text-gray-500' : 'text-white/60'}`}
+          >
+            LKR
+          </p>
+        </div>
+      </div>
+
+      {/* Chart Section */}
+      <div
+        className={`rounded-2xl p-6 sm:p-8 shadow-lg ${
+          isDark
+            ? 'bg-[#1a110d]/80 backdrop-blur-xl border border-white/10'
+            : 'bg-white border border-gray-200'
+        }`}
+      >
+        <h3
+          className={`text-xl font-bold mb-6 ${isDark ? 'text-[#f2f0ea]' : 'text-gray-900'}`}
+        >
+          Savings vs. Winnings Overview
+        </h3>
+
+        <div style={{ width: '100%', height: 400 }}>
+          <Line data={chartData} options={chartOptions} />
+        </div>
+      </div>
     </div>
   );
 };

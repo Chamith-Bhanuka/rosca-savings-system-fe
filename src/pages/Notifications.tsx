@@ -12,9 +12,6 @@ import {
 import { useNavigate } from 'react-router-dom';
 import type { RootState } from '../store/store.ts';
 import { useAuth } from '../context/authContext';
-import Navbar from '../components/NavBar.tsx';
-import Footer from '../components/Footer';
-import MegaMenu from '../components/MegaMenu.tsx';
 import Pagination from '../components/Pagination.tsx';
 import {
   getAllNotifications,
@@ -57,9 +54,8 @@ const Notifications: React.FC = () => {
   const [totalNotifications, setTotalNotifications] = useState(0);
 
   useEffect(() => {
-    document.body.setAttribute('data-theme', theme);
     document.title = 'Notifications - Seettuwa';
-  }, [theme]);
+  }, []);
 
   const fetchNotifications = async (pageNumber = 1) => {
     setLoading(true);
@@ -182,215 +178,206 @@ const Notifications: React.FC = () => {
   };
 
   return (
-    <div
-      className={`flex flex-col min-h-screen font-['Inter'] relative ${isDark ? 'bg-[#0f0806]' : 'bg-[#faf8f5]'}`}
-    >
-      {isDark && <div className="noise-overlay" />}
-
-      <Navbar />
-      <MegaMenu />
-
-      <main className="flex-1 px-4 sm:px-6 lg:px-8 pt-[88px] pb-12 relative z-10">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <header className="text-center mb-8">
-            <h1
-              className={`text-4xl sm:text-5xl font-['Playfair_Display'] font-extrabold mb-2 ${
-                isDark ? 'text-[#d4a574]' : 'text-[#b8894d]'
-              }`}
-            >
-              Notifications
-            </h1>
-            <p
-              className={`text-lg ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
-            >
-              Stay updated with your savings circles
-            </p>
-          </header>
-
-          {/* Filter Section */}
-          <div
-            className={`rounded-2xl p-6 mb-8 shadow-lg ${
-              isDark
-                ? 'bg-[#1a110d]/80 backdrop-blur-xl border border-white/10'
-                : 'bg-white border border-gray-200'
+    <>
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <header className="text-center mb-8">
+          <h1
+            className={`text-4xl sm:text-5xl font-['Playfair_Display'] font-extrabold mb-2 ${
+              isDark ? 'text-[#d4a574]' : 'text-[#b8894d]'
             }`}
           >
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div
-                className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
-              >
-                Showing {notifications.length} of {totalNotifications}{' '}
-                notification{totalNotifications !== 1 ? 's' : ''}
-              </div>
+            Notifications
+          </h1>
+          <p
+            className={`text-lg ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
+          >
+            Stay updated with your savings circles
+          </p>
+        </header>
 
-              {/* Filter Buttons */}
-              <div
-                className={`flex items-center p-1 rounded-lg border ${
-                  isDark
-                    ? 'bg-white/5 border-white/10'
-                    : 'bg-gray-50 border-gray-300'
+        {/* Filter Section */}
+        <div
+          className={`rounded-2xl p-6 mb-8 shadow-lg ${
+            isDark
+              ? 'bg-[#1a110d]/80 backdrop-blur-xl border border-white/10'
+              : 'bg-white border border-gray-200'
+          }`}
+        >
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div
+              className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
+            >
+              Showing {notifications.length} of {totalNotifications}{' '}
+              notification{totalNotifications !== 1 ? 's' : ''}
+            </div>
+
+            {/* Filter Buttons */}
+            <div
+              className={`flex items-center p-1 rounded-lg border ${
+                isDark
+                  ? 'bg-white/5 border-white/10'
+                  : 'bg-gray-50 border-gray-300'
+              }`}
+            >
+              <button
+                onClick={() => setFilter('all')}
+                className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
+                  filter === 'all'
+                    ? isDark
+                      ? 'bg-[#d4a574] text-white shadow-md'
+                      : 'bg-[#b8894d] text-white shadow-md'
+                    : isDark
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-500 hover:text-gray-900'
                 }`}
               >
-                <button
-                  onClick={() => setFilter('all')}
-                  className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                    filter === 'all'
-                      ? isDark
-                        ? 'bg-[#d4a574] text-white shadow-md'
-                        : 'bg-[#b8894d] text-white shadow-md'
-                      : isDark
-                        ? 'text-gray-400 hover:text-white'
-                        : 'text-gray-500 hover:text-gray-900'
-                  }`}
-                >
-                  All
-                </button>
-                <button
-                  onClick={() => setFilter('unread')}
-                  className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                    filter === 'unread'
-                      ? isDark
-                        ? 'bg-[#d4a574] text-white shadow-md'
-                        : 'bg-[#b8894d] text-white shadow-md'
-                      : isDark
-                        ? 'text-gray-400 hover:text-white'
-                        : 'text-gray-500 hover:text-gray-900'
-                  }`}
-                >
-                  Unread
-                </button>
-              </div>
+                All
+              </button>
+              <button
+                onClick={() => setFilter('unread')}
+                className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
+                  filter === 'unread'
+                    ? isDark
+                      ? 'bg-[#d4a574] text-white shadow-md'
+                      : 'bg-[#b8894d] text-white shadow-md'
+                    : isDark
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-500 hover:text-gray-900'
+                }`}
+              >
+                Unread
+              </button>
             </div>
           </div>
+        </div>
 
-          {/* Notifications List */}
-          <div className="space-y-3 mb-8">
-            {loading ? (
-              // Loading Skeleton
-              [1, 2, 3, 4, 5].map((i) => (
-                <div
-                  key={i}
-                  className={`h-20 rounded-xl animate-pulse ${
-                    isDark
-                      ? 'bg-[#1a110d]/80 border border-white/10'
-                      : 'bg-white border border-gray-200'
-                  }`}
-                />
-              ))
-            ) : notifications.length === 0 ? (
-              // Empty State
+        {/* Notifications List */}
+        <div className="space-y-3 mb-8">
+          {loading ? (
+            // Loading Skeleton
+            [1, 2, 3, 4, 5].map((i) => (
               <div
-                className={`text-center py-16 rounded-xl shadow-lg ${
+                key={i}
+                className={`h-20 rounded-xl animate-pulse ${
                   isDark
-                    ? 'bg-[#1a110d]/80 backdrop-blur-xl border border-white/10'
+                    ? 'bg-[#1a110d]/80 border border-white/10'
                     : 'bg-white border border-gray-200'
                 }`}
+              />
+            ))
+          ) : notifications.length === 0 ? (
+            // Empty State
+            <div
+              className={`text-center py-16 rounded-xl shadow-lg ${
+                isDark
+                  ? 'bg-[#1a110d]/80 backdrop-blur-xl border border-white/10'
+                  : 'bg-white border border-gray-200'
+              }`}
+            >
+              <Bell
+                className={`w-12 h-12 mx-auto mb-3 ${
+                  isDark ? 'text-gray-600' : 'text-gray-400'
+                }`}
+              />
+              <h3
+                className={`text-lg font-semibold mb-1 ${
+                  isDark ? 'text-gray-300' : 'text-gray-700'
+                }`}
               >
-                <Bell
-                  className={`w-12 h-12 mx-auto mb-3 ${
-                    isDark ? 'text-gray-600' : 'text-gray-400'
-                  }`}
-                />
-                <h3
-                  className={`text-lg font-semibold mb-1 ${
-                    isDark ? 'text-gray-300' : 'text-gray-700'
-                  }`}
-                >
-                  No notifications found
-                </h3>
-                <p
-                  className={`text-sm ${isDark ? 'text-gray-500' : 'text-gray-600'}`}
-                >
-                  You're all caught up!
-                </p>
-              </div>
-            ) : (
-              notifications.map((note) => {
-                const { title, desc } = getContent(note);
+                No notifications found
+              </h3>
+              <p
+                className={`text-sm ${isDark ? 'text-gray-500' : 'text-gray-600'}`}
+              >
+                You're all caught up!
+              </p>
+            </div>
+          ) : (
+            notifications.map((note) => {
+              const { title, desc } = getContent(note);
 
-                return (
-                  <div
-                    key={note._id}
-                    onClick={() => handleNotificationClick(note)}
-                    className={`group rounded-xl p-4 transition-all cursor-pointer hover:shadow-lg ${
-                      isDark
-                        ? 'bg-[#1a110d]/80 backdrop-blur-xl border border-white/10 hover:border-[#d4a574]/40 hover:bg-[#1a110d]'
-                        : 'bg-white border border-gray-200 hover:border-[#b8894d]/40 hover:shadow-md'
-                    } ${!note.read ? (isDark ? 'border-l-4 border-l-[#d4a574]' : 'border-l-4 border-l-[#b8894d]') : ''}`}
-                  >
-                    <div className="flex items-center gap-3">
-                      {/* Icon Container */}
-                      <div
-                        className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center ${getIconColor(
-                          note.type,
-                          note.read
-                        )}`}
-                      >
-                        {getIcon(note.type)}
-                      </div>
+              return (
+                <div
+                  key={note._id}
+                  onClick={() => handleNotificationClick(note)}
+                  className={`group rounded-xl p-4 transition-all cursor-pointer hover:shadow-lg ${
+                    isDark
+                      ? 'bg-[#1a110d]/80 backdrop-blur-xl border border-white/10 hover:border-[#d4a574]/40 hover:bg-[#1a110d]'
+                      : 'bg-white border border-gray-200 hover:border-[#b8894d]/40 hover:shadow-md'
+                  } ${!note.read ? (isDark ? 'border-l-4 border-l-[#d4a574]' : 'border-l-4 border-l-[#b8894d]') : ''}`}
+                >
+                  <div className="flex items-center gap-3">
+                    {/* Icon Container */}
+                    <div
+                      className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center ${getIconColor(
+                        note.type,
+                        note.read
+                      )}`}
+                    >
+                      {getIcon(note.type)}
+                    </div>
 
-                      {/* Content */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3
-                            className={`font-semibold text-sm truncate ${
-                              note.read
-                                ? isDark
-                                  ? 'text-gray-400'
-                                  : 'text-gray-600'
-                                : isDark
-                                  ? 'text-[#f2f0ea]'
-                                  : 'text-gray-900'
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3
+                          className={`font-semibold text-sm truncate ${
+                            note.read
+                              ? isDark
+                                ? 'text-gray-400'
+                                : 'text-gray-600'
+                              : isDark
+                                ? 'text-[#f2f0ea]'
+                                : 'text-gray-900'
+                          }`}
+                        >
+                          {title}
+                        </h3>
+
+                        {!note.read && (
+                          <div
+                            className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                              isDark ? 'bg-[#d4a574]' : 'bg-[#b8894d]'
                             }`}
-                          >
-                            {title}
-                          </h3>
-
-                          {!note.read && (
-                            <div
-                              className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                                isDark ? 'bg-[#d4a574]' : 'bg-[#b8894d]'
-                              }`}
-                            ></div>
-                          )}
-                        </div>
-
-                        <p
-                          className={`text-xs truncate ${
-                            isDark ? 'text-gray-500' : 'text-gray-600'
-                          }`}
-                        >
-                          {desc}
-                        </p>
+                          ></div>
+                        )}
                       </div>
 
-                      {/* Right Section */}
-                      <div className="flex items-center gap-3 flex-shrink-0">
-                        <span
-                          className={`text-xs whitespace-nowrap ${
-                            isDark ? 'text-gray-500' : 'text-gray-500'
-                          }`}
-                        >
-                          {formatDistanceToNow(new Date(note.createdAt), {
-                            addSuffix: true,
-                          })}
-                        </span>
+                      <p
+                        className={`text-xs truncate ${
+                          isDark ? 'text-gray-500' : 'text-gray-600'
+                        }`}
+                      >
+                        {desc}
+                      </p>
+                    </div>
 
-                        <ChevronRight
-                          className={`w-4 h-4 transition-transform group-hover:translate-x-1 ${
-                            isDark ? 'text-gray-600' : 'text-gray-400'
-                          }`}
-                        />
-                      </div>
+                    {/* Right Section */}
+                    <div className="flex items-center gap-3 flex-shrink-0">
+                      <span
+                        className={`text-xs whitespace-nowrap ${
+                          isDark ? 'text-gray-500' : 'text-gray-500'
+                        }`}
+                      >
+                        {formatDistanceToNow(new Date(note.createdAt), {
+                          addSuffix: true,
+                        })}
+                      </span>
+
+                      <ChevronRight
+                        className={`w-4 h-4 transition-transform group-hover:translate-x-1 ${
+                          isDark ? 'text-gray-600' : 'text-gray-400'
+                        }`}
+                      />
                     </div>
                   </div>
-                );
-              })
-            )}
-          </div>
+                </div>
+              );
+            })
+          )}
         </div>
-      </main>
+      </div>
 
       <Pagination
         currentPage={page}
@@ -398,9 +385,7 @@ const Notifications: React.FC = () => {
         onPageChange={fetchNotifications}
         isDark={isDark}
       />
-
-      <Footer />
-    </div>
+    </>
   );
 };
 
