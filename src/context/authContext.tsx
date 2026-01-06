@@ -7,7 +7,7 @@ type AuthUser = {
   firstName: string;
   lastName: string;
   email: string;
-  role: string;
+  role: string[];
   id: string;
   token: string;
   avatarUrl: string;
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }: any) => {
           firstName: userData.firstName,
           lastName: userData.lastName,
           email: userData.email,
-          role: userData.role,
+          role: Array.isArray(userData.role) ? userData.role : [userData.role],
           id: userData._id,
           token,
           avatarUrl: userData.avatarUrl,

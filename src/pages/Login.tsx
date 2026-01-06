@@ -62,7 +62,7 @@ const Login: React.FC = () => {
         firstName: userData.firstName,
         lastName: userData.lastName,
         email: userData.email,
-        role: userData.role,
+        role: Array.isArray(userData.role) ? userData.role : [userData.role],
         id: userData._id,
         avatarUrl: userData.avatarUrl,
         phone: userData.phone,
