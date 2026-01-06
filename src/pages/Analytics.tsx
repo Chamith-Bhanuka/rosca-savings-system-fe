@@ -5,7 +5,6 @@ import Navbar from '../components/NavBar';
 import MegaMenu from '../components/MegaMenu';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/authContext.tsx';
-import axios from 'axios';
 import Loader from '../components/Loader';
 import {
   Download,
@@ -27,6 +26,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { getAnalytics } from '../services/user.service.ts';
 
 ChartJS.register(
   CategoryScale,
@@ -53,14 +53,8 @@ const Analytics: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem('accessToken');
-        const res = await axios.get(
-          'http://localhost:5000/api/v1/user/analytics',
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        setData(res.data);
+        const response = await getAnalytics();
+        setData(response);
       } catch (error) {
         console.error('Analytics error', error);
       } finally {
