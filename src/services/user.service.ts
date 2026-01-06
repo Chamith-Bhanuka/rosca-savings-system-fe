@@ -9,3 +9,8 @@ export const getAnalytics = async () => {
   const res = await api.get(`/user/analytics`);
   return res.data;
 };
+
+export const getDashboard = async () => {
+  const res = await api.get(`/user/dashboard`);
+  return res.data;
+};

@@ -18,10 +18,9 @@ import Navbar from '../components/NavBar';
 import MegaMenu from '../components/MegaMenu';
 import Footer from '../components/Footer';
 import Loader from '../components/Loader';
-// import { useAuth } from '../context/authContext.tsx';
+import { getDashboard } from '../services/user.service.ts';
 
 const Dashboard: React.FC = () => {
-  // const { user } = useAuth();
   const theme = useSelector((state: RootState) => state.theme.value);
   const isDark = theme === 'dark';
   const navigate = useNavigate();
@@ -36,14 +35,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        const token = localStorage.getItem('accessToken');
-        const response = await fetch(
-          'http://localhost:5000/api/v1/user/dashboard',
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        const result = await response.json();
+        const result = await getDashboard();
         setData(result);
       } catch (error) {
         console.error('Dashboard error', error);
