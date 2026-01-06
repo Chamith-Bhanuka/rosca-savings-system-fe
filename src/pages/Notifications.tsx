@@ -16,6 +16,10 @@ import Navbar from '../components/NavBar.tsx';
 import Footer from '../components/Footer';
 import MegaMenu from '../components/MegaMenu.tsx';
 import Pagination from '../components/Pagination.tsx';
+import {
+  getAllNotifications,
+  markAsRead,
+} from '../services/notification.service.ts';
 
 interface NotificationPayload {
   userId?: string;
@@ -63,22 +67,13 @@ const Notifications: React.FC = () => {
       const token = user?.token;
       if (!token) return;
 
-      const unreadQuery = filter === 'unread' ? '&unread=true' : '';
-      const response = await fetch(
-        `http://localhost:5000/api/v1/notifications?limit=10&page=${pageNumber}${unreadQuery}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await getAllNotifications(pageNumber, filter);
+      console.log(response);
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log('API Response:', data); // Debug log
-        setNotifications(data.notifications);
-        setTotalPage(data.totalPages || data.total_pages || 1);
-        setTotalNotifications(data.total || 0);
-        setPage(pageNumber);
-      }
+      setNotifications(response.notifications);
+      setTotalPage(response.totalPages || response.total_pages || 1);
+      setTotalNotifications(response.total || 0);
+      setPage(pageNumber);
     } catch (error) {
       console.error('Failed to fetch notifications', error);
     } finally {
@@ -96,11 +91,8 @@ const Notifications: React.FC = () => {
     );
 
     try {
-      const token = user?.token;
-      await fetch(`http://localhost:5000/api/v1/notifications/${id}/read`, {
-        method: 'PATCH',
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await markAsRead(id);
+      console.info(response);
     } catch (err) {
       console.error('Failed to mark as read', err);
     }
