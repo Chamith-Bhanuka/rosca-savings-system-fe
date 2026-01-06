@@ -5,7 +5,6 @@ import Navbar from '../components/NavBar';
 import MegaMenu from '../components/MegaMenu';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/authContext.tsx';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import {
   User,
@@ -17,6 +16,7 @@ import {
   Trash2,
   AlertTriangle,
 } from 'lucide-react';
+import { deleteProfile, updateProfile } from '../services/user.service.ts';
 
 const Settings: React.FC = () => {
   const { user, logout } = useAuth();
@@ -75,31 +75,16 @@ const Settings: React.FC = () => {
     setLoading(true);
 
     try {
-      const token = localStorage.getItem('accessToken');
-      const data = new FormData();
+      const response = await updateProfile(
+        formData.firstName,
+        formData.lastName,
+        formData.phone,
+        formData.bankAccount,
+        formData.bankName,
+        selectedFile
+      );
 
-      data.append('firstName', formData.firstName);
-      data.append('lastName', formData.lastName);
-      data.append('phone', formData.phone);
-
-      const bankDetails = {
-        accountNumber: formData.bankAccount,
-        bankName: formData.bankName,
-      };
-      data.append('bankDetails', JSON.stringify(bankDetails));
-
-      if (selectedFile) {
-        data.append('image', selectedFile);
-      }
-
-      await axios.put('http://localhost:5000/api/v1/user/profile', data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      alert('Profile Updated Successfully!');
+      alert(response.message);
     } catch (error) {
       console.error(error);
       alert('Failed to update profile.');
@@ -113,10 +98,8 @@ const Settings: React.FC = () => {
     if (!window.confirm('Are you sure? This action cannot be undone.')) return;
 
     try {
-      const token = localStorage.getItem('accessToken');
-      await axios.delete('http://localhost:5000/api/v1/user/profile', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await deleteProfile();
+      console.info(response.message);
       logout();
       navigate('/login');
     } catch (error: any) {
