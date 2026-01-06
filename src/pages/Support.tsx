@@ -4,7 +4,6 @@ import type { RootState } from '../store/store';
 import Navbar from '../components/NavBar';
 import MegaMenu from '../components/MegaMenu';
 import Footer from '../components/Footer';
-import axios from 'axios';
 import {
   MessageCircle,
   Send,
@@ -14,6 +13,10 @@ import {
   Bell,
   CheckCircle,
 } from 'lucide-react';
+import {
+  contactAdmin,
+  subscribeNewsletter,
+} from '../services/support.service.ts';
 
 const Support: React.FC = () => {
   const theme = useSelector((state: RootState) => state.theme.value);
@@ -36,10 +39,8 @@ const Support: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post(
-        'http://localhost:5000/api/v1/support/contact',
-        formData
-      );
+      const response = await contactAdmin(formData);
+      console.info(response.message);
       alert('Message sent! Check your inbox for confirmation.');
       setFormData({ email: '', subject: '', message: '' });
     } catch (err) {
@@ -52,9 +53,8 @@ const Support: React.FC = () => {
   const handleSubscribe = async () => {
     if (!subEmail) return;
     try {
-      await axios.post('http://localhost:5000/api/v1/support/subscribe', {
-        email: subEmail,
-      });
+      const response = await subscribeNewsletter(subEmail);
+      console.info(response.message);
       alert('Subscribed successfully!');
       setSubEmail('');
     } catch (err: any) {
