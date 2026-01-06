@@ -16,6 +16,7 @@ import {
   FileText,
   MessageSquare,
 } from 'lucide-react';
+import { raiseDispute } from '../services/dispute.service.ts';
 
 const TabButton = ({ active, onClick, label, icon: Icon }: any) => (
   <button
@@ -48,7 +49,7 @@ const Disputes: React.FC = () => {
     document.body.setAttribute('data-theme', theme);
     document.title = 'Resolution Center - Seettuwa';
 
-    // Set CSS custom property for active tab border
+    // active tab
     document.documentElement.style.setProperty(
       '--border-active',
       isDark ? '#d4a574' : '#b8894d'
@@ -80,23 +81,10 @@ const Disputes: React.FC = () => {
       return alert('Please enter a Group ID (Copy from URL for now)');
 
     try {
-      const token = localStorage.getItem('accessToken');
-      const formData = new FormData();
-      formData.append('groupId', groupId);
-      formData.append('subject', subject);
-      formData.append('description', description);
-      if (file) formData.append('image', file);
-
-      await axios.post('http://localhost:5000/api/v1/dispute', formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      alert('Ticket Created!');
+      const response = await raiseDispute(groupId, subject, description, file);
+      alert(response.message);
       setActiveTab('list');
-      fetchDisputes();
+      await fetchDisputes();
       setSubject('');
       setDescription('');
       setGroupId('');

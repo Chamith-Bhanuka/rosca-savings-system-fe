@@ -17,3 +17,19 @@ export const resolveDispute = async (
   });
   return res.data;
 };
+
+export const raiseDispute = async (
+  groupId: string,
+  subject: string,
+  description: string,
+  image: null | File
+) => {
+  const formData = new FormData();
+  formData.append('groupId', groupId);
+  formData.append('subject', subject);
+  formData.append('description', description);
+  if (image) formData.append('image', image);
+
+  const res = await api.post(`/dispute`, formData);
+  return res.data;
+};
