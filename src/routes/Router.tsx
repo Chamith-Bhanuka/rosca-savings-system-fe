@@ -1,25 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { lazy, type ReactNode, Suspense } from 'react';
+
 import Loader from '../components/Loader.tsx';
-import JoinGroup from '../pages/JoinGroup.tsx';
 import { useAuth } from '../context/authContext.tsx';
-import ModeratorGroups from '../pages/ModeratorGroups.tsx';
-import MyGroups from '../pages/MyGroups.tsx';
-import MyGroup from '../pages/MyGroup.tsx';
-import Notifications from '../pages/Notifications.tsx';
-import ManageGroup from '../pages/ManageGroup.tsx';
-import Wallet from '../pages/Wallet.tsx';
-import Settings from '../pages/Settings.tsx';
-import Dashboard from '../pages/Dashboard.tsx';
-import Leaderboard from '../pages/Leaderboard.tsx';
-import Analytics from '../pages/Analytics.tsx';
-import TrustProfile from '../pages/TrustProfile.tsx';
-import Disputes from '../pages/Disputes.tsx';
-import AdminPanel from '../pages/AdminPanel.tsx';
-import Support from '../pages/Support.tsx';
-import AdminNewsletter from '../components/AdminNewsletter.tsx';
-import HowItWorks from '../pages/HowItWorks.tsx';
-import StaticPage from '../pages/static/StaticPage.tsx';
 
 // Lazy load pages
 const Home = lazy(() => import('../pages/Home'));
@@ -27,6 +10,24 @@ const Login = lazy(() => import('../pages/Login.tsx'));
 const Register = lazy(() => import('../pages/Register.tsx'));
 const TestSuspend = lazy(() => import('../pages/TestSuspend.tsx'));
 const CreateGroup = lazy(() => import('../pages/CreateGroup.tsx'));
+const JoinGroup = lazy(() => import('../pages/JoinGroup.tsx'));
+const ModeratorGroups = lazy(() => import('../pages/ModeratorGroups.tsx'));
+const MyGroups = lazy(() => import('../pages/MyGroups.tsx'));
+const MyGroup = lazy(() => import('../pages/MyGroup.tsx'));
+const Notifications = lazy(() => import('../pages/Notifications.tsx'));
+const ManageGroup = lazy(() => import('../pages/ManageGroup.tsx'));
+const Wallet = lazy(() => import('../pages/Wallet.tsx'));
+const Settings = lazy(() => import('../pages/Settings.tsx'));
+const Dashboard = lazy(() => import('../pages/Dashboard.tsx'));
+const Leaderboard = lazy(() => import('../pages/Leaderboard.tsx'));
+const Analytics = lazy(() => import('../pages/Analytics.tsx'));
+const TrustProfile = lazy(() => import('../pages/TrustProfile.tsx'));
+const Disputes = lazy(() => import('../pages/Disputes.tsx'));
+const AdminPanel = lazy(() => import('../pages/AdminPanel.tsx'));
+const Support = lazy(() => import('../pages/Support.tsx'));
+const AdminNewsletter = lazy(() => import('../components/AdminNewsletter.tsx'));
+const HowItWorks = lazy(() => import('../pages/HowItWorks.tsx'));
+const StaticPage = lazy(() => import('../pages/static/StaticPage.tsx'));
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
