@@ -4,7 +4,6 @@ import type { RootState } from '../store/store';
 import Navbar from '../components/NavBar';
 import MegaMenu from '../components/MegaMenu';
 import Footer from '../components/Footer';
-import axios from 'axios';
 import Loader from '../components/Loader';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -18,6 +17,7 @@ import {
   Image as ImageIcon,
   Mail,
 } from 'lucide-react';
+import { getAllDisputes, resolveDispute } from '../services/dispute.service.ts';
 
 interface Dispute {
   _id: string;
@@ -53,14 +53,8 @@ const AdminPanel: React.FC = () => {
 
   const fetchAllDisputes = async () => {
     try {
-      const token = localStorage.getItem('accessToken');
-      const res = await axios.get(
-        'http://localhost:5000/api/v1/dispute/admin/all',
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setDisputes(res.data);
+      const disputes = await getAllDisputes();
+      setDisputes(disputes);
     } catch (error) {
       console.error('Admin Access Error', error);
       alert('Failed to load admin data. Ensure you are logged in.');
@@ -85,20 +79,13 @@ const AdminPanel: React.FC = () => {
 
     setProcessing(true);
     try {
-      const token = localStorage.getItem('accessToken');
-      await axios.put(
-        'http://localhost:5000/api/v1/dispute/resolve',
-        {
-          disputeId: selectedTicket._id,
-          resolution,
-          adminComment,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+      const response = await resolveDispute(
+        selectedTicket._id,
+        resolution,
+        adminComment
       );
 
-      alert('Ticket Resolved Successfully!');
+      alert(response.message);
       setSelectedTicket(null);
       setAdminComment('');
       fetchAllDisputes();
