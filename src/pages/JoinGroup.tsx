@@ -23,6 +23,7 @@ import MegaMenu from '../components/MegaMenu.tsx';
 import { getAllGroups, joinUser } from '../services/group.service.ts';
 import Pagination from '../components/Pagination.tsx';
 import { useAuth } from '../context/authContext';
+import { _isDomSupported } from 'chart.js/helpers';
 
 interface ToastMessage {
   id: number;
@@ -72,7 +73,7 @@ const JoinGroup: React.FC = () => {
         currentCycle: g.currentCycle,
         maxCycles: g.maxCycles,
         membersCount: g.members.length,
-        members: g.members.map((m: any) => String(m)),
+        members: g.members.map((m: any) => String(m._id)),
         totalMembers: g.totalMembers,
         pendingRequests: g.pendingRequests.map((p: any) => ({
           user: String(p.user),
@@ -209,7 +210,11 @@ const JoinGroup: React.FC = () => {
         variant: 'disabled',
       };
     }
-    if (group.members?.includes(user.id)) {
+
+    console.log('💇 ', group.members);
+    console.log('🤣 ', user.id);
+
+    if (group.members.includes(user.id)) {
       return {
         disabled: true,
         text: 'Already Joined',
@@ -217,6 +222,7 @@ const JoinGroup: React.FC = () => {
         variant: 'success',
       };
     }
+
     if (group.pendingRequests.some((req: any) => req.user === user.id)) {
       return {
         disabled: true,
