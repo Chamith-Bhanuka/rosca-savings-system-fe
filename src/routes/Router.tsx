@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { lazy, type ReactNode, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 
 import Loader from '../components/Loader.tsx';
 import { useAuth } from '../context/authContext.tsx';
@@ -30,11 +30,44 @@ const AdminNewsletter = lazy(() => import('../components/AdminNewsletter.tsx'));
 const HowItWorks = lazy(() => import('../pages/HowItWorks.tsx'));
 const StaticPage = lazy(() => import('../pages/static/StaticPage.tsx'));
 
-const ProtectedRoute = ({ children }: { children: ReactNode }) => {
+const ProtectedRoute = ({ children, roles }: any) => {
   const { user } = useAuth();
-  if (!user) {
-    return <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/login" replace />;
+
+  if (roles && !roles.some((role: any) => user.role?.includes(role))) {
+    console.log(user.role);
+    return (
+      <div className="flex items-center justify-center h-screen w-full bg-gradient-to-br from-[#1a1614] via-[#0f0e0c] to-[#1a1614]">
+        <div className="flex flex-col items-center gap-4 text-center max-w-md px-6">
+          {/* Icon */}
+          <div className="w-16 h-16 rounded-full flex items-center justify-center bg-[#d4a574]/10">
+            <svg
+              className="w-8 h-8 text-[#d4a574]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              />
+            </svg>
+          </div>
+
+          {/* Content */}
+          <div className="flex flex-col gap-2">
+            <h2 className="text-2xl font-bold text-[#f2f0ea]">Access Denied</h2>
+            <p className="text-base text-[#f2f0ea]/70">
+              You do not have permission to view this page.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
   }
+
   return children;
 };
 
@@ -76,7 +109,13 @@ export default function Router() {
 
           <Route path="/dashboard" element={<Dashboard />} />
 
-          <Route element={<Layout />}>
+          <Route
+            element={
+              <ProtectedRoute>
+                <Layout />
+              </ProtectedRoute>
+            }
+          >
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/notifications" element={<Notifications />} />
@@ -86,7 +125,14 @@ export default function Router() {
 
           <Route path="/disputes" element={<Disputes />} />
 
-          <Route path="/admin" element={<AdminPanel />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute roles={['ADMIN']}>
+                <AdminPanel />
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="/help" element={<Support />} />
 
