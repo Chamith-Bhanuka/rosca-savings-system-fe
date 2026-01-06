@@ -3,6 +3,7 @@ import { lazy, type ReactNode, Suspense } from 'react';
 
 import Loader from '../components/Loader.tsx';
 import { useAuth } from '../context/authContext.tsx';
+import Layout from '../components/Layout';
 
 // Lazy load pages
 const Home = lazy(() => import('../pages/Home'));
@@ -65,8 +66,6 @@ export default function Router() {
 
           <Route path="/contributions" element={<MyGroups />} />
 
-          <Route path="/notifications" element={<Notifications />} />
-
           <Route path="/groups/manage/:groupId" element={<ManageGroup />} />
 
           <Route path="/groups/my/:groupId" element={<MyGroup />} />
@@ -77,9 +76,11 @@ export default function Router() {
 
           <Route path="/dashboard" element={<Dashboard />} />
 
-          <Route path="/leaderboard" element={<Leaderboard />} />
-
-          <Route path="/analytics" element={<Analytics />} />
+          <Route element={<Layout />}>
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/notifications" element={<Notifications />} />
+          </Route>
 
           <Route path="/trust" element={<TrustProfile />} />
 
