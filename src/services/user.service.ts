@@ -52,3 +52,8 @@ export const deleteProfile = async () => {
   const res = await api.delete(`/user/profile`);
   return res.data;
 };
+
+export const getTrustProfile = async () => {
+  const res = await api.get(`/user/trust-profile`);
+  return res.data;
+};

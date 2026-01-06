@@ -4,7 +4,6 @@ import type { RootState } from '../store/store';
 import Navbar from '../components/NavBar';
 import MegaMenu from '../components/MegaMenu';
 import Footer from '../components/Footer';
-import axios from 'axios';
 import Loader from '../components/Loader';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -16,6 +15,7 @@ import {
   AlertCircle,
   Award,
 } from 'lucide-react';
+import { getTrustProfile } from '../services/user.service.ts';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -34,14 +34,8 @@ const TrustProfile: React.FC = () => {
   useEffect(() => {
     const fetchTrust = async () => {
       try {
-        const token = localStorage.getItem('accessToken');
-        const res = await axios.get(
-          'http://localhost:5000/api/v1/user/trust-profile',
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        setData(res.data);
+        const res = await getTrustProfile();
+        setData(res);
       } catch (error) {
         console.error(error);
       } finally {
