@@ -5,9 +5,9 @@ import Navbar from '../components/NavBar';
 import MegaMenu from '../components/MegaMenu';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/authContext.tsx';
-import axios from 'axios';
 import Loader from '../components/Loader';
 import { Trophy, Medal, Award, Crown, Star } from 'lucide-react';
+import { getLeaderboard } from '../services/user.service.ts';
 
 const Leaderboard: React.FC = () => {
   const { user } = useAuth();
@@ -25,15 +25,9 @@ const Leaderboard: React.FC = () => {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const token = localStorage.getItem('accessToken');
-        const res = await axios.get(
-          'http://localhost:5000/api/v1/user/leaderboard',
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        setLeaders(res.data.leaderboard);
-        setMyRank(res.data.myRank);
+        const res = await getLeaderboard();
+        setLeaders(res.leaderboard);
+        setMyRank(res.myRank);
       } catch (error) {
         console.error('Leaderboard error', error);
       } finally {

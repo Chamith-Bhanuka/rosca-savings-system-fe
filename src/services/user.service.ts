@@ -14,3 +14,8 @@ export const getDashboard = async () => {
   const res = await api.get(`/user/dashboard`);
   return res.data;
 };
+
+export const getLeaderboard = async () => {
+  const res = await api.get(`/user/leaderboard`);
+  return res.data;
+};
