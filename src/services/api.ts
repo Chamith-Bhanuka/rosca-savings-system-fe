@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'rosca-savings-system-be.vercel.app/api/v1',
+  baseURL: 'https://rosca-savings-system-be.vercel.app/api/v1',
   withCredentials: true,
 });
 
@@ -32,7 +32,7 @@ api.interceptors.response.use(
 
       try {
         const res = await axios.post(
-          `rosca-savings-system-be.vercel.app/auth/refresh`,
+          'https://rosca-savings-system-be.vercel.app/api/v1',
           {},
           { withCredentials: true }
         );
