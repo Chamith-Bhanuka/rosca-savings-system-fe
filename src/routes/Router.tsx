@@ -76,7 +76,7 @@ export default function Router() {
     <BrowserRouter>
       <Suspense fallback={<Loader />}>
         <Routes>
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
 
           <Route path="/login" element={<Login />} />
 
@@ -228,8 +228,6 @@ export default function Router() {
               </StaticPage>
             }
           />
-
-          <Route path="/" element={<div>Hello, from router..!</div>} />
         </Routes>
       </Suspense>
     </BrowserRouter>
