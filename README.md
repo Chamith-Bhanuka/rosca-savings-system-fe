@@ -26,7 +26,7 @@ This is the client-side application for **Seettuwa**, a comprehensive Fintech ap
 
 The application connects to the Seettuwa Backend API to offer features like group management, secure payments via Stripe, and real-time lucky draws.
 
-**Live Demo:** [https://seettuwa-app.vercel.app](https://seettuwa-app.vercel.app)
+**Live Demo:** [https://seettuwa-app.vercel.app](https://rosca-savings-system-fe.vercel.app/)
 
 ---
 
