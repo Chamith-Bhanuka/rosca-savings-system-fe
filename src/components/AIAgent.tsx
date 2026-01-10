@@ -28,7 +28,6 @@ const AIAgent: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Hide scrollbar but keep scroll functionality
   useEffect(() => {
     const style = document.createElement('style');
     style.innerHTML = `
