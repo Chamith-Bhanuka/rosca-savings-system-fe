@@ -10,8 +10,8 @@ import { useNavigate } from 'react-router-dom';
 import type { ApiError } from '../services/api.ts';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState<string>('userone@example.com');
-  const [password, setPassword] = useState<string>('1234');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { setUser } = useAuth();
   const navigate = useNavigate();
